@@ -1,0 +1,708 @@
+
+:root{
+    --principal:#1f3f6d;
+    --secundario:#4a8be0;
+    --fondo:#f4f6f9;
+    --texto:#666;
+    --blanco:#fff;
+    --verde:#27ae60;
+    --verde-hover:#219653;
+    --rojo:#e74c3c;
+    --rojo-hover:#c0392b;
+    --naranja:#f39c12;
+    --naranja-hover:#d68910;
+    --gris:#ddd;
+}
+
+/* CONFIGURACION GENERAL */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:var(--fondo);
+    color:var(--texto);
+    overflow-x:hidden;
+}
+
+a{
+    text-decoration:none;
+}
+
+/* CONTENIDO */
+
+.contenido{
+    width:100%;
+    min-height:100vh;
+    padding:30px 55px;
+    background:transparent;
+}
+
+/* BARRA SUPERIOR */
+
+.barra-superior{
+    width:100%;
+    max-width:1100px;
+    margin:0 auto 20px auto;
+    display:flex;
+    justify-content:flex-start;
+    align-items:center;
+    gap:10px;
+}
+
+/* BOTONES GENERALES */
+
+.btn{
+    display:inline-block;
+    padding:10px 18px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    font-weight:600;
+    transition:.3s;
+}
+
+.btn:hover{
+    opacity:.9;
+}
+
+/* BOTON PRINCIPAL / ACCIONES AZULES */
+
+.btn-principal{
+    background:var(--principal);
+    color:var(--blanco);
+}
+
+.btn-principal:hover{
+    background:var(--secundario);
+    color:var(--blanco);
+}
+
+/* BOTONES DE NAVEGACION */
+
+.btn-verde{
+    background:var(--principal);
+    color:var(--blanco);
+}
+
+.btn-verde:hover{
+    background:var(--secundario);
+    color:var(--blanco);
+}
+
+/* BOTON INICIO */
+
+.barra-superior a.btn-inicio{
+    display:inline-block;
+    padding:10px 20px;
+    background:var(--principal) !important;
+    color:var(--blanco) !important;
+    text-decoration:none;
+    border-radius:8px;
+    font-size:15px;
+    font-weight:600;
+    box-shadow:0 3px 8px rgba(0,0,0,.10);
+    transition:.3s;
+}
+
+.barra-superior a.btn-inicio:hover{
+    background:var(--secundario) !important;
+    color:var(--blanco) !important;
+    transform:translateY(-1px);
+}
+
+/* ENCABEZADO */
+
+.encabezado{
+    width:100%;
+    max-width:1100px;
+    margin:0 auto 25px auto;
+    padding:25px;
+    background:var(--blanco);
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+}
+
+.encabezado h1{
+    color:var(--principal);
+    font-size:32px;
+    margin-bottom:8px;
+}
+
+.encabezado p{
+    color:var(--texto);
+    font-size:15px;
+    line-height:1.5;
+}
+
+/* PANEL */
+
+.panel{
+    width:100%;
+    max-width:1100px;
+    margin:0 auto;
+    padding:30px;
+    background:var(--blanco);
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+}
+
+/* PANEL HEADER */
+
+.panel-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    margin-bottom:20px;
+}
+
+.panel-header h2{
+    color:var(--principal);
+    margin-bottom:6px;
+}
+
+.panel-header p{
+    color:var(--texto);
+    font-size:14px;
+}
+
+/* BARRA DE ACCIONES */
+
+.barra-acciones{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.barra-acciones input{
+    width:250px;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    outline:none;
+    font-size:14px;
+}
+
+.barra-acciones input:focus{
+    border-color:var(--secundario);
+}
+
+/* TABLA */
+
+.tabla{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.tabla th{
+    background:var(--principal);
+    color:var(--blanco);
+    padding:12px;
+    text-align:left;
+    font-size:14px;
+}
+
+.tabla td{
+    padding:12px;
+    border-bottom:1px solid var(--gris);
+    font-size:14px;
+}
+
+.tabla tr:hover{
+    background:#f1f5fa;
+}
+
+/* ACCIONES */
+
+.acciones{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+/* VER */
+
+.btn-ver{
+    display:inline-block;
+    background:var(--verde);
+    color:var(--blanco);
+    padding:7px 12px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    transition:.3s;
+    font-size:13px;
+    text-align:center;
+}
+
+.btn-ver:hover{
+    background:var(--verde-hover);
+    color:var(--blanco);
+}
+
+/* EDITAR */
+
+.btn-editar{
+    display:inline-block;
+    background:var(--secundario);
+    color:var(--blanco);
+    padding:7px 12px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    transition:.3s;
+    font-size:13px;
+    text-align:center;
+}
+
+.btn-editar:hover{
+    background:#357abd;
+    color:var(--blanco);
+}
+
+/* ELIMINAR */
+
+.btn-eliminar{
+    display:inline-block;
+    background:var(--rojo);
+    color:var(--blanco);
+    padding:7px 12px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    transition:.3s;
+    font-size:13px;
+    text-align:center;
+}
+
+.btn-eliminar:hover{
+    background:var(--rojo-hover);
+    color:var(--blanco);
+}
+
+/* FORMULARIO */
+
+.formulario{
+    width:100%;
+}
+
+.grupo-formulario{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:16px 18px;
+}
+
+.campo{
+    display:flex;
+    flex-direction:column;
+}
+
+.campo label{
+    margin-bottom:5px;
+    font-weight:600;
+    color:var(--principal);
+    font-size:14px;
+}
+
+.campo input,
+.campo select,
+.campo textarea{
+    width:100%;
+    padding:9px 11px;
+    border:1px solid #d6dce5;
+    border-radius:6px;
+    background:var(--blanco);
+    color:#333;
+    font-size:14px;
+    transition:.3s;
+}
+
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus{
+    outline:none;
+    border-color:var(--secundario);
+    box-shadow:0 0 5px rgba(74,139,224,.25);
+}
+
+.campo textarea{
+    resize:vertical;
+    min-height:90px;
+}
+
+.campo-completo{
+    grid-column:1 / -1;
+}
+
+/* BOTONES DEL FORMULARIO */
+
+.botones-formulario{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    margin-top:20px;
+}
+
+.botones-formulario .btn{
+    min-width:110px;
+    text-align:center;
+    padding:9px 16px;
+}
+
+/* GUARDAR / GUARDAR CAMBIOS */
+
+.botones-formulario .btn-principal{
+    background:var(--verde);
+    color:var(--blanco);
+}
+
+.botones-formulario .btn-principal:hover{
+    background:var(--verde-hover);
+    color:var(--blanco);
+}
+
+/* LIMPIAR */
+
+.botones-formulario .btn-limpiar{
+    background:var(--naranja);
+    color:var(--blanco);
+}
+
+.botones-formulario .btn-limpiar:hover{
+    background:var(--naranja-hover);
+    color:var(--blanco);
+}
+
+/* CANCELAR */
+
+.botones-formulario .btn-cancelar{
+    background:var(--rojo);
+    color:var(--blanco);
+}
+
+.botones-formulario .btn-cancelar:hover{
+    background:var(--rojo-hover);
+    color:var(--blanco);
+}
+
+/* MENSAJE DE ERROR */
+
+.mensaje-error{
+    margin-bottom:20px;
+    padding:12px 15px;
+    background:#fdecea;
+    color:var(--rojo-hover);
+    border:1px solid #f5c6cb;
+    border-radius:6px;
+    font-size:14px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1000px){
+    .barra-superior,
+    .encabezado,
+    .panel{
+        width:100%;
+    }
+}
+
+@media(max-width:800px){
+    .contenido{
+        padding:20px;
+    }
+
+    .barra-superior{
+        flex-direction:row;
+        justify-content:flex-start;
+        align-items:center;
+        flex-wrap:wrap;
+    }
+
+    .panel-header{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .barra-acciones{
+        width:100%;
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .barra-acciones input{
+        width:100%;
+    }
+
+    .grupo-formulario{
+        grid-template-columns:1fr;
+    }
+
+    .campo-completo{
+        grid-column:1;
+    }
+
+    .acciones{
+        flex-direction:column;
+    }
+}
+
+/* UNIDADES EN CAMPOS */
+
+.peso-con-unidad,
+.campo-con-unidad{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.peso-con-unidad input,
+.campo-con-unidad input{
+    flex:1;
+}
+
+.peso-con-unidad select{
+    width:75px;
+}
+
+.campo-con-unidad span{
+    min-width:35px;
+    color:var(--texto);
+    font-size:14px;
+}
+
+/* PANEL DE INSUMOS */
+
+.panel-insumos{
+    margin-top:25px;
+    padding-top:25px;
+    border-top:1px solid var(--gris);
+}
+
+.tabla-insumos-contenedor{
+    width:100%;
+    overflow-x:auto;
+}
+
+.tabla-insumos select,
+.tabla-insumos input{
+    width:100%;
+    padding:9px 10px;
+    border:1px solid #d6dce5;
+    border-radius:6px;
+    background:var(--blanco);
+    color:#333;
+    font-size:14px;
+}
+
+.tabla-insumos select:focus,
+.tabla-insumos input:focus{
+    outline:none;
+    border-color:var(--secundario);
+}
+
+.btn-eliminar-insumo{
+    background:var(--rojo);
+    color:var(--blanco);
+    border:none;
+    border-radius:5px;
+    padding:7px 10px;
+    cursor:pointer;
+    font-size:13px;
+}
+
+.btn-eliminar-insumo:hover{
+    background:var(--rojo-hover);
+    color:var(--blanco);
+}
+
+/* ==================================================
+   CALCULADORA DE INGREDIENTES
+   ESTILOS LIMITADOS A VERRECETA.PHP
+================================================== */
+
+.panel-calculadora{
+    margin:25px auto !important;
+    padding:30px !important;
+    border:1px solid #e0e5eb;
+    border-radius:12px;
+    background:var(--blanco);
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+}
+
+.panel-calculadora .panel-header{
+    display:block;
+    margin:0 0 28px;
+    padding-bottom:18px;
+    border-bottom:1px solid #e0e5eb;
+}
+
+.panel-calculadora .panel-header h2{
+    margin-bottom:8px;
+    color:var(--principal);
+}
+
+.panel-calculadora .panel-header p{
+    line-height:1.7;
+}
+
+.panel-calculadora .calculadora-campos{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:24px;
+    margin:0 0 24px;
+}
+
+.panel-calculadora .campo{
+    min-width:0;
+}
+
+.panel-calculadora .campo label{
+    display:block;
+    margin-bottom:10px;
+    line-height:1.5;
+}
+
+.panel-calculadora .campo input{
+    width:100%;
+    min-height:42px;
+    padding:10px 12px;
+    border:1px solid #d6dce5;
+    border-radius:6px;
+    background:var(--blanco);
+    color:#333;
+    font-size:14px;
+}
+
+.panel-calculadora .campo input:focus{
+    outline:none;
+    border-color:var(--secundario);
+    box-shadow:0 0 5px rgba(74,139,224,.25);
+}
+
+.panel-calculadora #mensajeCalculo{
+    min-height:24px;
+    margin:0 0 18px;
+    padding:0;
+    line-height:1.6;
+    font-size:14px;
+}
+
+.panel-calculadora .botones-calculo{
+    display:flex;
+    justify-content:flex-start;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:14px;
+    margin:20px 0 25px;
+}
+
+.panel-calculadora .botones-calculo .btn{
+    display:inline-block;
+    min-width:180px;
+    min-height:42px;
+    padding:11px 18px;
+    border:none;
+    border-radius:6px;
+    color:var(--blanco);
+    font-family:'Segoe UI',sans-serif;
+    font-size:14px;
+    font-weight:600;
+    text-align:center;
+    cursor:pointer;
+    transition:background-color .2s ease,transform .2s ease;
+}
+
+.panel-calculadora .botones-calculo .btn-calcular{
+    background:var(--principal);
+    color:var(--blanco);
+}
+
+.panel-calculadora .botones-calculo .btn-calcular:hover{
+    background:#2d5a96;
+    color:var(--blanco);
+    transform:translateY(-1px);
+}
+
+.panel-calculadora .botones-calculo .btn-restablecer{
+    background:var(--rojo);
+    color:var(--blanco);
+}
+
+.panel-calculadora .botones-calculo .btn-restablecer:hover{
+    background:var(--rojo-hover);
+    color:var(--blanco);
+    transform:translateY(-1px);
+}
+
+.panel-calculadora .nota-calculadora{
+    margin:0;
+    padding:18px 0 0;
+    border-top:1px solid #e0e5eb;
+    color:#555;
+    font-size:14px;
+    line-height:1.7;
+}
+
+/* SEPARACIÓN ENTRE LOS PANELES DE VER RECETA */
+
+.contenido > .panel-calculadora + .panel-insumos{
+    margin-top:30px !important;
+}
+
+.contenido > .panel:not(.panel-calculadora):not(.panel-insumos){
+    margin-top:0;
+    margin-bottom:25px;
+}
+
+/* TABLA DE CANTIDADES CALCULADAS */
+
+.panel-insumos .tabla-insumos th,
+.panel-insumos .tabla-insumos td{
+    vertical-align:middle;
+}
+
+.panel-insumos .tabla-insumos td.cantidad-calculada{
+    color:var(--principal);
+    font-weight:700;
+}
+
+/* RESPONSIVE DE LA CALCULADORA */
+
+@media(max-width:800px){
+    .panel-calculadora{
+        margin:20px auto !important;
+        padding:22px 18px !important;
+    }
+
+    .panel-calculadora .calculadora-campos{
+        grid-template-columns:1fr;
+        gap:18px;
+        margin-bottom:22px;
+    }
+
+    .panel-calculadora .panel-header{
+        margin-bottom:22px;
+    }
+
+    .panel-calculadora .botones-calculo{
+        flex-direction:column;
+        align-items:stretch;
+        gap:12px;
+        margin:20px 0;
+    }
+
+    .panel-calculadora .botones-calculo .btn{
+        width:100%;
+        min-width:0;
+    }
+
+    .contenido > .panel-calculadora + .panel-insumos{
+        margin-top:20px !important;
+    }
+}

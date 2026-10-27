@@ -1,0 +1,783 @@
+/* VARIABLES */
+
+:root{
+
+    --principal:#1f3f6d;
+    --secundario:#4a8be0;
+    --fondo:#f4f6f9;
+    --texto:#666;
+    --blanco:#fff;
+    --borde:#ddd;
+
+}
+
+
+/* CONFIGURACION GENERAL */
+
+*{
+
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+
+}
+
+
+body{
+
+    background:var(--fondo);
+    color:#333;
+    overflow-x:hidden;
+
+}
+
+
+/* CONTENIDO */
+
+.contenido{
+
+    width:100%;
+    min-height:100vh;
+
+    padding:15px 55px;
+
+    background:transparent;
+
+}
+
+
+/* BARRA SUPERIOR */
+
+.barra-superior{
+
+    width:100%;
+    max-width:1100px;
+    margin:0 auto 20px auto;
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+}
+
+
+/* BOTON VOLVER */
+
+.btn-volver{
+
+    display:inline-block;
+
+    padding:10px 20px;
+
+    background:var(--principal);
+    color:var(--blanco);
+
+    text-decoration:none;
+
+    border-radius:8px;
+
+    font-size:15px;
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+
+.btn-volver:hover{
+
+    background:var(--secundario);
+
+}
+
+
+/* BOTON INICIO */
+
+.btn-inicio{
+
+    display:inline-block;
+
+    padding:10px 20px;
+
+    background:var(--principal);
+    color:var(--blanco);
+
+    text-decoration:none;
+
+    border-radius:8px;
+
+    font-size:15px;
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+
+.btn-inicio:hover{
+
+    background:var(--secundario);
+
+}
+
+
+/* ENCABEZADO */
+
+.encabezado{
+
+    width:100%;
+    max-width:1100px;
+
+    margin:0 auto 25px auto;
+
+    padding:25px;
+
+    background:var(--blanco);
+
+    border-radius:12px;
+
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+
+}
+
+
+.encabezado h1{
+
+    margin-bottom:8px;
+
+    color:var(--principal);
+
+    font-size:32px;
+
+}
+
+
+.encabezado p{
+
+    color:var(--texto);
+
+    font-size:15px;
+
+    line-height:1.5;
+
+}
+
+
+/* MENU DE SEGURIDAD */
+
+.menu-seguridad{
+
+    width:100%;
+    max-width:1100px;
+
+    margin:0 auto;
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:20px;
+
+}
+
+
+/* TARJETAS */
+
+.tarjeta-menu{
+
+    display:block;
+
+    min-height:150px;
+
+    padding:25px;
+
+    background:var(--blanco);
+
+    color:inherit;
+
+    text-decoration:none;
+
+    border-left:5px solid var(--secundario);
+
+    border-radius:12px;
+
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+}
+
+
+.tarjeta-menu:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 6px 15px rgba(0,0,0,.10);
+
+}
+
+
+/* NUMERO */
+
+.numero-modulo{
+
+    display:block;
+
+    margin-bottom:16px;
+
+    color:var(--secundario);
+
+    font-size:14px;
+
+    font-weight:600;
+
+}
+
+
+/* TITULO */
+
+.tarjeta-menu h2{
+
+    margin-bottom:8px;
+
+    color:var(--principal);
+
+    font-size:20px;
+
+    font-weight:600;
+
+}
+
+
+/* DESCRIPCION */
+
+.tarjeta-menu p{
+
+    color:var(--texto);
+
+    font-size:14px;
+
+    line-height:1.5;
+
+}
+
+
+/* FORMULARIO */
+
+.formulario-seguridad{
+
+    width:100%;
+    max-width:1100px;
+
+    margin:0 auto 25px auto;
+
+    padding:25px;
+
+    background:var(--blanco);
+
+    border-radius:12px;
+
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+
+}
+
+
+.formulario-seguridad h2{
+
+    margin-bottom:8px;
+
+    color:var(--principal);
+
+    font-size:22px;
+
+}
+
+
+.formulario-seguridad > p{
+
+    margin-bottom:25px;
+
+    color:var(--texto);
+
+    font-size:14px;
+
+}
+
+
+/* PANEL */
+
+.panel{
+
+    width:100%;
+    max-width:1100px;
+
+    margin:0 auto 25px auto;
+
+    padding:25px;
+
+    background:var(--blanco);
+
+    border-radius:12px;
+
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+
+}
+
+
+.panel-header{
+
+    margin-bottom:25px;
+
+}
+
+
+.panel-header h2{
+
+    margin-bottom:8px;
+
+    color:var(--principal);
+
+    font-size:22px;
+
+}
+
+
+.panel-header p{
+
+    color:var(--texto);
+
+    font-size:14px;
+
+}
+
+
+/* CAMPOS */
+
+.grupo-formulario{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:20px;
+
+}
+
+
+.campo{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+
+.campo label{
+
+    margin-bottom:7px;
+
+    color:var(--principal);
+
+    font-size:14px;
+
+    font-weight:600;
+
+}
+
+
+.campo input{
+
+    width:100%;
+
+    padding:11px 13px;
+
+    border:1px solid var(--borde);
+
+    border-radius:8px;
+
+    outline:none;
+
+    font-size:14px;
+
+}
+
+
+.campo input:focus{
+
+    border-color:var(--secundario);
+
+}
+
+
+/* INFORMACION */
+
+.campo-info{
+
+    width:100%;
+
+    padding:11px 13px;
+
+    background:#f8fafc;
+
+    border:1px solid var(--borde);
+
+    border-radius:8px;
+
+    color:#555;
+
+    font-size:14px;
+
+}
+
+
+/* ESTADO */
+
+.estado-sesion{
+
+    color:#27ae60;
+
+    font-weight:600;
+
+    background:#eaf8ef;
+
+    border-color:#ccebd7;
+
+}
+
+
+/* ACCIONES */
+
+.acciones-formulario{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:12px;
+
+    margin-top:25px;
+
+}
+
+
+/* BOTONES */
+
+.btn-guardar,
+.btn-cancelar,
+.btn-descargar{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:10px 20px;
+
+    border:none;
+
+    border-radius:8px;
+
+    color:var(--blanco);
+
+    font-size:14px;
+
+    font-weight:600;
+
+    text-decoration:none;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+
+/* GUARDAR / CREAR COPIA */
+
+.btn-guardar{
+
+    background:var(--principal);
+
+}
+
+
+.btn-guardar:hover{
+
+    background:var(--secundario);
+
+}
+
+
+/* CANCELAR / CERRAR SESION */
+
+.btn-cancelar{
+
+    background:#e74c3c;
+
+}
+
+
+.btn-cancelar:hover{
+
+    background:#c0392b;
+
+}
+
+
+/* DESCARGAR */
+
+.btn-descargar{
+
+    background:var(--secundario);
+
+}
+
+
+.btn-descargar:hover{
+
+    background:var(--principal);
+
+}
+
+
+/* TABLAS */
+
+.panel table{
+
+    width:100%;
+
+    margin-top:15px;
+
+    border-collapse:collapse;
+
+}
+
+
+.panel table th{
+
+    padding:12px;
+
+    background:var(--principal);
+
+    color:var(--blanco);
+
+    font-size:14px;
+
+    font-weight:600;
+
+    text-align:center;
+
+}
+
+
+.panel table td{
+
+    padding:12px;
+
+    text-align:center;
+
+    border-bottom:1px solid #eee;
+
+    color:#555;
+
+    font-size:14px;
+
+}
+
+
+.panel table tbody tr:hover{
+
+    background:#f8fafc;
+
+}
+
+
+/* ACTIVIDAD Y ACCESO */
+
+.cards{
+
+    width:100%;
+    max-width:1100px;
+
+    margin:0 auto 25px auto;
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:20px;
+
+}
+
+
+.card{
+
+    padding:20px;
+
+    background:var(--blanco);
+
+    border-left:5px solid var(--secundario);
+
+    border-radius:12px;
+
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+
+}
+
+
+.card h2{
+
+    margin-bottom:6px;
+
+    color:var(--principal);
+
+    font-size:30px;
+
+}
+
+
+.card span{
+
+    color:var(--texto);
+
+    font-size:14px;
+
+}
+
+
+/* ESTADO ACTIVO */
+
+.estado-activo{
+
+    color:#27ae60;
+
+    font-weight:600;
+
+}
+
+
+/* RESPONSIVE */
+
+@media(max-width:1000px){
+
+    .barra-superior,
+    .encabezado,
+    .menu-seguridad,
+    .formulario-seguridad,
+    .panel{
+
+        width:100%;
+
+    }
+
+
+    .cards{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+}
+
+
+@media(max-width:700px){
+
+    .contenido{
+
+        padding:20px;
+
+    }
+
+
+    .menu-seguridad{
+
+        grid-template-columns:1fr;
+
+        gap:15px;
+
+    }
+
+
+    .encabezado{
+
+        padding:20px;
+
+    }
+
+
+    .encabezado h1{
+
+        font-size:28px;
+
+    }
+
+
+    .tarjeta-menu{
+
+        padding:20px;
+
+    }
+
+
+    .formulario-seguridad,
+    .panel{
+
+        padding:20px;
+
+    }
+
+
+    .grupo-formulario{
+
+        grid-template-columns:1fr;
+
+        gap:15px;
+
+    }
+
+
+    .acciones-formulario{
+
+        flex-direction:column;
+
+    }
+
+
+    .btn-guardar,
+    .btn-cancelar,
+    .btn-descargar{
+
+        width:100%;
+
+        text-align:center;
+
+    }
+
+
+    .cards{
+
+        grid-template-columns:1fr;
+
+    }
+
+
+    .panel table{
+
+        display:block;
+
+        overflow-x:auto;
+
+    }
+
+
+    .panel th,
+    .panel td{
+
+        white-space:nowrap;
+
+    }
+
+}

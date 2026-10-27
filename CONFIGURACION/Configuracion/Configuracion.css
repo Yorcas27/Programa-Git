@@ -1,0 +1,326 @@
+:root{
+
+    --principal:#1f3f6d;
+    --secundario:#4a8be0;
+
+    --fondo:#f4f6f9;
+    --texto:#666;
+    --blanco:#fff;
+    --borde:#ddd;
+
+}
+
+
+/* CONFIGURACION GENERAL */
+
+*{
+
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+
+    font-family:'Segoe UI',sans-serif;
+
+}
+
+
+body{
+
+    background:var(--fondo);
+
+    color:#333;
+
+    overflow-x:hidden;
+
+}
+
+
+/* CONTENIDO */
+
+.contenido{
+
+    width:100%;
+    min-height:100vh;
+
+    padding:15px 55px;
+
+    background:transparent;
+
+}
+
+
+/* CONTENEDORES */
+
+.barra-superior,
+.encabezado,
+.menu-configuracion{
+
+    width:100%;
+    max-width:1100px;
+
+    margin-left:auto;
+    margin-right:auto;
+
+}
+
+
+/* BARRA SUPERIOR */
+
+.barra-superior{
+
+    margin-bottom:15px;
+
+}
+
+
+/* BOTON VOLVER */
+
+.btn-volver{
+
+    display:inline-block;
+
+    padding:10px 20px;
+
+    background:var(--principal);
+    color:var(--blanco);
+
+    text-decoration:none;
+
+    border-radius:8px;
+
+    font-size:15px;
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+
+.btn-volver:hover{
+
+    background:var(--secundario);
+
+}
+
+
+/* ENCABEZADO */
+
+.encabezado{
+
+    background:var(--blanco);
+
+    padding:20px 25px;
+
+    margin-bottom:20px;
+
+    border-radius:12px;
+
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+
+}
+
+
+.encabezado h1{
+
+    color:var(--principal);
+
+    font-size:30px;
+
+    margin-bottom:6px;
+
+}
+
+
+.encabezado p{
+
+    color:var(--texto);
+
+    font-size:14px;
+
+    line-height:1.5;
+
+}
+
+
+/* MENU CONFIGURACION */
+
+.menu-configuracion{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:18px;
+
+}
+
+
+/* TARJETAS */
+
+.tarjeta-menu{
+
+    position:relative;
+
+    display:block;
+
+    min-height:140px;
+
+    padding:20px;
+
+    background:var(--blanco);
+
+    border-radius:10px;
+
+    text-decoration:none;
+
+    color:inherit;
+
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+
+    border-left:5px solid var(--secundario);
+
+    transition:.3s;
+
+}
+
+
+.tarjeta-menu:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 7px 16px rgba(0,0,0,.12);
+
+}
+
+
+/* NUMERO DEL MODULO */
+
+.numero-modulo{
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    width:36px;
+    height:36px;
+
+    margin-bottom:12px;
+
+    background:#eef2f7;
+
+    color:var(--principal);
+
+    border-radius:8px;
+
+    font-size:14px;
+
+    font-weight:700;
+
+}
+
+
+/* TITULO */
+
+.tarjeta-menu h3{
+
+    margin-bottom:7px;
+
+    color:var(--principal);
+
+    font-size:18px;
+
+}
+
+
+/* DESCRIPCION */
+
+.tarjeta-menu p{
+
+    color:var(--texto);
+
+    font-size:13px;
+
+    line-height:1.5;
+
+}
+
+
+/* COLORES */
+
+.empresa{
+
+    border-left-color:#27ae60;
+
+}
+
+
+.catalogo{
+
+    border-left-color:#4a8be0;
+
+}
+
+
+.seguridad{
+
+    border-left-color:#e67e22;
+
+}
+
+
+.base-datos{
+
+    border-left-color:#e74c3c;
+
+}
+
+
+/* TABLET */
+
+@media(max-width:900px){
+
+    .menu-configuracion{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+}
+
+
+/* MOVIL */
+
+@media(max-width:600px){
+
+    .contenido{
+
+        padding:20px;
+
+    }
+
+    .encabezado{
+
+        padding:20px;
+
+    }
+
+    .encabezado h1{
+
+        font-size:26px;
+
+    }
+
+    .menu-configuracion{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .tarjeta-menu{
+
+        min-height:auto;
+
+    }
+
+}

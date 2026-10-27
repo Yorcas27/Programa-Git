@@ -1,0 +1,259 @@
+:root{
+    --principal:#1E3A5F;
+    --secundario:#4A90E2;
+    --fondo:#F4F6F9;
+    --texto:#2C3E50;
+    --blanco:#FFFFFF;
+}
+
+/* RESET */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+/* BODY */
+
+body{
+
+    font-family:'Segoe UI',sans-serif;
+
+    background:
+
+    linear-gradient(
+        rgba(126,142,175,.70),
+        rgba(158,204,221,.70)
+    ),
+
+    url("../IMG/utencilios3.jpg");
+
+
+    background-size:cover;
+
+    background-position:center;
+
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    min-height:100vh;
+
+}
+/* CONTENEDOR LOGIN */
+.login-container{
+
+    width:100%;
+
+    max-width:380px;
+
+    padding:15px;
+
+}
+/* TARJETA */
+
+.login-card{
+    background-color:rgba(234,242,251,.90);
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 8px 25px rgba(0,0,0,.20);
+    text-align:center;
+    backdrop-filter:blur(5px);
+     animation:aparecer .6s ease;
+}
+/* IMAGEN */
+.logo-placeholder{
+    margin-bottom:10px;
+}
+.logo-placeholder img{
+    width:90px;
+    height:auto;
+    border-radius:10px;
+}
+/* TITULOS */
+.login-card h2{
+    color:var(--principal);
+    margin-bottom:10px;
+}
+
+.subtitulo{
+
+    color:#666;
+
+    margin-bottom:25px;
+
+    font-size:14px;
+
+}
+.bienvenida{
+
+    color:#555;
+
+    font-size:14px;
+
+    margin-bottom:20px;
+
+}
+/* FORMULARIO */
+
+form{
+
+    display:flex;
+
+    flex-direction:column;
+
+    text-align:left;
+
+}
+
+label{
+
+    margin-top:12px;
+
+    margin-bottom:5px;
+
+    font-weight:bold;
+
+    color:var(--texto);
+
+}
+
+input{
+
+    padding:12px;
+
+    border:1px solid #ccc;
+
+    border-radius:8px;
+
+    font-size:14px;
+
+}
+
+input:focus{
+
+    outline:none;
+
+    border-color:var(--secundario);
+
+}
+/* BOTON LOGIN */
+
+.btn-login{
+
+    margin-top:20px;
+
+    text-align:center;
+
+    text-decoration:none;
+
+    background-color:var(--principal);
+
+    color:white;
+
+    padding:12px;
+
+    border-radius:8px;
+
+    transition:.3s;
+
+    font-weight:bold;
+
+}
+.btn-login:hover{
+
+    background-color:var(--secundario);
+    transform:translateY(-2px);
+}
+/* NOTA */
+
+.nota{
+
+    margin-top:20px;
+
+    font-size:13px;
+
+    color:#888;
+
+}
+.login-card{
+
+    animation:aparecer .6s ease;
+
+}
+
+
+@keyframes aparecer{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(20px);
+
+    }
+
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+body{
+
+    animation:fondoMovimiento 25s infinite alternate;
+
+}
+
+
+@keyframes fondoMovimiento{
+
+
+    from{
+
+        background-size:100%;
+
+    }
+
+
+    to{
+
+        background-size:108%;
+
+    }
+
+}
+/* RECUPERACIÓN DE ACCESO */
+
+.enlace-recuperacion{
+
+    display:block;
+
+    margin-top:15px;
+
+    color:var(--principal);
+
+    font-size:13px;
+
+    text-align:center;
+
+    text-decoration:none;
+
+    transition:.3s;
+
+}
+
+.enlace-recuperacion:hover{
+
+    color:var(--secundario);
+
+    text-decoration:underline;
+
+}

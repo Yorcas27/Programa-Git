@@ -1,0 +1,32 @@
+
+# Credenciales y configuracion privada
+.env
+.env.*
+!.env.example
+**/config.local.php
+**/conexion.local.php
+
+# Dependencias PHP: se restauran con Composer
+
+
+# Archivos temporales y registros
+*.log
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Copias de seguridad y volcados de bases de datos
+*.sql
+*.zip
+*.bak
+*.old
+
+# No versionar archivos generados por pruebas
+.phpunit.cache/
+
+# Archivos con credenciales locales
+/Includes/conexion.php
+/prueba_conexion.php

@@ -1,0 +1,488 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: #f4f6f9;
+    overflow-x: hidden;
+    color: #333;
+}
+
+.container {
+    display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100vh;
+    background: #1f3f6d;
+    overflow-y: auto;
+    z-index: 1000;
+    padding: 0 20px;
+}
+
+.sidebar h2 {
+    color: #fff;
+    text-align: center;
+    padding: 28px 5px;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar li {
+    margin-bottom: 14px;
+}
+
+.sidebar a {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    min-height: 50px;
+    padding: 13px 17px;
+    color: #fff;
+    background: #294f7f;
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 15px;
+    transition: .25s;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, .12);
+}
+
+.sidebar .icono {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    font-size: 19px;
+    flex-shrink: 0;
+}
+
+.sidebar li:hover a {
+    background: #365f92;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(0, 0, 0, .18);
+}
+
+.sidebar .active a {
+    background: #4a8be0;
+    box-shadow: 0 5px 14px rgba(0, 0, 0, .20);
+}
+
+/* Contenido */
+.contenido {
+    flex: 1;
+    margin-left: 280px;
+    padding: 4px 38px;
+    min-height: 100vh;
+}
+
+/* Encabezado */
+.encabezado {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.titulo-dashboard h1 {
+    font-size: 32px;
+    color: #1f3f6d;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.titulo-dashboard p {
+    color: #666;
+    font-size: 15px;
+}
+
+/* Tarjetas */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+.card {
+    background: #fff;
+    padding: 20px 22px;
+    border-radius: 11px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, .07);
+    transition: .25s;
+    min-height: 135px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, .09);
+}
+
+.titulo-card {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1f3f6d;
+    margin-bottom: 4px;
+}
+
+.card span {
+    display: block;
+    color: #777;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.card h2 {
+    font-size: 32px;
+    color: #1f3f6d;
+    font-weight: 700;
+    line-height: 1;
+}
+
+/* Colores de tarjetas */
+.pendientes {
+    border-left: 5px solid #3498db;
+}
+
+.produccion {
+    border-left: 5px solid #f39c12;
+}
+
+.entregas {
+    border-left: 5px solid #27ae60;
+}
+
+.inventario {
+    border-left: 5px solid #e74c3c;
+}
+
+/* Paneles */
+.paneles {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 18px;
+    align-items: stretch;
+}
+
+.paneles .panel {
+    margin-bottom: 0;
+}
+
+.panel {
+    background: #fff;
+    padding: 20px;
+    border-radius: 11px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, .07);
+    min-width: 0;
+}
+
+.panel-header {
+    margin-bottom: 15px;
+}
+
+.panel h2 {
+    color: #1f3f6d;
+    font-size: 18px;
+    font-weight: 600;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ececec;
+}
+
+/* Tabla */
+.tabla-contenedor {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 480px;
+}
+
+thead {
+    background: #1f3f6d;
+    color: #fff;
+}
+
+th {
+    padding: 11px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+}
+
+td {
+    padding: 11px 12px;
+    border-bottom: 1px solid #ececec;
+    font-size: 13px;
+    color: #555;
+}
+
+tbody tr:hover {
+    background: #f5f9ff;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Estados */
+.estado {
+    font-weight: 600;
+}
+
+.pendiente {
+    color: #f39c12;
+}
+
+.en-produccion {
+    color: #3498db;
+}
+
+.sin-registros {
+    text-align: center;
+    color: #777;
+    padding: 25px !important;
+}
+
+/* Gráfica */
+.panel-grafica {
+    min-height: 100%;
+}
+
+.grafica-vertical {
+    height: 255px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    gap: 8px;
+    padding: 15px 5px 0;
+    border-bottom: 1px solid #ececec;
+}
+
+.barra-item {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: 0;
+}
+
+.barra-contenedor {
+    height: 190px;
+    width: 100%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.barra {
+    width: 30px;
+    min-height: 15px;
+    max-height: 180px;
+    border-radius: 6px 6px 0 0;
+    position: relative;
+    transition: .3s;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.barra span {
+    position: absolute;
+    top: -22px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #1f3f6d;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.barra:hover {
+    opacity: .75;
+    transform: scaleY(1.03);
+    transform-origin: bottom;
+}
+
+.barra-pedidos {
+    background: #3498db;
+}
+
+.barra-produccion {
+    background: #f39c12;
+}
+
+.barra-entregas {
+    background: #27ae60;
+}
+
+.barra-facturacion {
+    background: #1f3f6d;
+}
+
+/* Etiquetas alineadas debajo de las barras */
+.barra-item p {
+    width: 100%;
+    min-height: 30px;
+    margin-top: 8px;
+    color: #666;
+    font-size: 11px;
+    line-height: 1.25;
+    text-align: center;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    overflow-wrap: normal;
+    word-break: normal;
+}
+
+/* Producción de hoy */
+.lista-produccion {
+    list-style: none;
+}
+
+.lista-produccion li {
+    padding: 11px 0;
+    border-bottom: 1px solid #ececec;
+    color: #555;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.lista-produccion li:last-child {
+    border-bottom: none;
+}
+
+.producto-produccion {
+    color: #555;
+}
+
+.cantidad-produccion {
+    color: #1f3f6d;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.sin-produccion {
+    color: #777 !important;
+    display: block !important;
+    text-align: center;
+    padding: 20px 0 !important;
+}
+
+/* Texto de gráfica */
+.texto-grafica {
+    text-align: center;
+    color: #888;
+    font-size: 11px;
+    line-height: 1.4;
+    margin-top: 10px;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .paneles {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 240px;
+    }
+
+    .contenido {
+        margin-left: 240px;
+        padding: 20px 25px;
+    }
+
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        padding: 0 15px;
+    }
+
+    .contenido {
+        margin-left: 0;
+        padding: 20px;
+    }
+
+    .container {
+        flex-direction: column;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .encabezado {
+        margin-bottom: 15px;
+    }
+
+    .titulo-dashboard h1 {
+        font-size: 28px;
+    }
+
+    .grafica-vertical {
+        height: 235px;
+        gap: 5px;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .barra-contenedor {
+        height: 175px;
+    }
+
+    .barra {
+        width: 22px;
+    }
+
+    .barra span {
+        font-size: 10px;
+    }
+
+    .barra-item p {
+        font-size: 10px;
+        min-height: 30px;
+    }
+}

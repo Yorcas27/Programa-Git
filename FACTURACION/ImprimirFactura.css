@@ -1,0 +1,259 @@
+:root{
+    --principal:#1f3f6d;
+    --secundario:#4a8be0;
+    --fondo:#f4f6f9;
+    --blanco:#ffffff;
+    --texto:#333333;
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:"Segoe UI",Arial,sans-serif;
+}
+
+body{
+    background:var(--fondo);
+    color:var(--texto);
+}
+
+.pagina-impresion{
+    width:100%;
+    min-height:100vh;
+    padding:30px 20px;
+}
+
+.barra-impresion{
+    width:100%;
+    max-width:800px;
+    margin:0 auto 25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+}
+
+.barra-impresion a,
+.barra-impresion button{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-width:150px;
+    height:42px;
+    padding:0 18px;
+    border:none;
+    border-radius:8px;
+    font-size:15px;
+    font-weight:600;
+    text-decoration:none;
+    cursor:pointer;
+}
+
+.btn-volver{
+    background:#e74c3c;
+    color:white;
+}
+
+.btn-volver:hover{
+    background:#c0392b;
+}
+
+.btn-imprimir{
+    background:var(--principal);
+    color:white;
+}
+
+.btn-imprimir:hover{
+    background:#2d5a96;
+}
+
+.factura-ticket{
+    width:80mm;
+    max-width:100%;
+    margin:0 auto;
+    padding:8mm 5mm;
+    background:white;
+    box-shadow:0 4px 18px rgba(0,0,0,.12);
+    color:#111;
+    font-size:12px;
+    line-height:1.35;
+}
+
+.factura-encabezado{
+    text-align:center;
+}
+
+.logo-empresa{
+    display:block;
+    max-width:55mm;
+    max-height:25mm;
+    margin:0 auto 5px;
+    object-fit:contain;
+}
+
+.factura-encabezado h1{
+    font-size:18px;
+    margin-bottom:4px;
+    font-weight:700;
+    text-transform:uppercase;
+}
+
+.factura-encabezado p{
+    font-size:10px;
+    margin:1px 0;
+}
+
+.separador{
+    border-top:1px dashed #333;
+    margin:8px 0;
+}
+
+.bloque-factura{
+    text-align:center;
+}
+
+.bloque-factura h2{
+    font-size:14px;
+    margin-bottom:5px;
+}
+
+.bloque-factura p{
+    font-size:11px;
+    margin:2px 0;
+}
+
+.datos-cliente h3,
+.detalle-factura h3{
+    font-size:12px;
+    margin-bottom:5px;
+}
+
+.datos-cliente p{
+    font-size:10.5px;
+    margin:2px 0;
+    word-break:break-word;
+}
+
+.producto-ticket{
+    padding:4px 0;
+}
+
+.producto-nombre{
+    font-size:11px;
+    font-weight:600;
+    word-break:break-word;
+}
+
+.producto-info{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:5px;
+    font-size:10.5px;
+}
+
+.producto-info span{
+    flex:1;
+}
+
+.producto-info strong{
+    text-align:right;
+    white-space:nowrap;
+}
+
+.sin-productos{
+    font-size:10px;
+    text-align:center;
+}
+
+.totales{
+    width:100%;
+}
+
+.totales div{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin:3px 0;
+    font-size:11px;
+}
+
+.totales .total-final{
+    margin-top:7px;
+    font-size:14px;
+    font-weight:700;
+}
+
+.pago{
+    font-size:10.5px;
+}
+
+.pago p{
+    margin:2px 0;
+}
+
+.factura-pie{
+    text-align:center;
+    margin-top:10px;
+    font-size:10px;
+}
+
+.factura-pie p{
+    margin:2px 0;
+}
+
+@media(max-width:600px){
+
+    .pagina-impresion{
+        padding:15px 5px;
+    }
+
+    .barra-impresion{
+        max-width:100%;
+    }
+
+    .barra-impresion a,
+    .barra-impresion button{
+        min-width:130px;
+    }
+
+    .factura-ticket{
+        padding:6mm 4mm;
+    }
+}
+
+@media print{
+
+    @page{
+        size:80mm auto;
+        margin:0;
+    }
+
+    html,
+    body{
+        width:80mm;
+        margin:0;
+        padding:0;
+        background:white;
+    }
+
+    .pagina-impresion{
+        width:80mm;
+        min-height:auto;
+        padding:0;
+        margin:0;
+    }
+
+    .barra-impresion{
+        display:none;
+    }
+
+    .factura-ticket{
+        width:80mm;
+        max-width:none;
+        margin:0;
+        padding:5mm 4mm;
+        box-shadow:none;
+    }
+}

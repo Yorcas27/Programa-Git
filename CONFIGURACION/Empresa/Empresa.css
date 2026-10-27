@@ -1,0 +1,394 @@
+/* VARIABLES */
+
+:root{
+    --principal:#1f3f6d;
+    --secundario:#4a8be0;
+    --fondo:#f4f6f9;
+    --texto:#666;
+    --blanco:#fff;
+    --borde:#ddd;
+}
+
+
+/* CONFIGURACION GENERAL */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:var(--fondo);
+    color:#333;
+    overflow-x:hidden;
+}
+
+
+/* CONTENIDO */
+
+.contenido{
+    width:100%;
+    min-height:100vh;
+    padding:15px 55px;
+    background:transparent;
+}
+
+
+/* BARRA SUPERIOR */
+
+.barra-superior{
+    width:100%;
+    max-width:1100px;
+    margin:0 auto 12px auto;
+}
+
+
+/* BOTON VOLVER */
+
+.btn-volver{
+    display:inline-block;
+    padding:10px 20px;
+    background:var(--principal);
+    color:var(--blanco);
+    text-decoration:none;
+    border-radius:8px;
+    font-size:15px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.btn-volver:hover{
+    background:var(--secundario);
+}
+
+
+/* BOTON INICIO */
+
+.barra-superior .btn-inicio{
+    display:inline-block;
+    padding:10px 20px;
+    margin-left:8px;
+    background:var(--principal);
+    color:var(--blanco);
+    text-decoration:none;
+    border-radius:8px;
+    font-size:15px;
+    font-weight:600;
+    box-shadow:0 3px 8px rgba(0,0,0,.10);
+    transition:.3s;
+}
+
+.barra-superior .btn-inicio:hover{
+    background:var(--secundario);
+    transform:translateY(-1px);
+}
+
+
+/* ENCABEZADO */
+
+.encabezado{
+    width:100%;
+    max-width:1100px;
+    margin:0 auto 15px auto;
+    padding:25px;
+    background:var(--blanco);
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+}
+
+.encabezado h1{
+    margin-bottom:8px;
+    color:var(--principal);
+    font-size:32px;
+}
+
+.encabezado p{
+    color:var(--texto);
+    font-size:15px;
+    line-height:1.5;
+}
+
+
+/* MENSAJES */
+
+.mensaje{
+    width:100%;
+    max-width:1100px;
+    margin:0 auto 15px auto;
+    padding:12px 16px;
+    border-radius:8px;
+    font-size:14px;
+    font-weight:600;
+}
+
+.mensaje.exito{
+    background:#eaf7ef;
+    color:#1e8449;
+    border:1px solid #b7e4c7;
+}
+
+.mensaje.error{
+    background:#fdecea;
+    color:#c0392b;
+    border:1px solid #f5b7b1;
+}
+
+
+/* FORMULARIO */
+
+.formulario-configuracion{
+    width:100%;
+    max-width:1100px;
+    margin:0 auto;
+    padding:25px;
+    background:var(--blanco);
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+}
+
+
+/* SECCIONES */
+
+.seccion-formulario{
+    margin-bottom:10px;
+}
+
+.seccion-formulario:last-of-type{
+    margin-bottom:0;
+}
+
+.seccion-formulario h2{
+    margin-bottom:10px;
+    padding-bottom:8px;
+    color:var(--principal);
+    font-size:20px;
+    border-bottom:1px solid var(--borde);
+}
+
+
+/* GRUPOS */
+
+.grupo-formulario{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px 20px;
+    margin-bottom:10px;
+}
+
+
+/* CAMPOS */
+
+.campo{
+    display:flex;
+    flex-direction:column;
+    margin-bottom:10px;
+}
+
+.campo label{
+    margin-bottom:7px;
+    color:var(--principal);
+    font-size:14px;
+    font-weight:600;
+}
+
+.campo input,
+.campo textarea{
+    width:100%;
+    padding:11px 13px;
+    border:1px solid var(--borde);
+    border-radius:7px;
+    background:var(--blanco);
+    color:#333;
+    font-size:14px;
+    outline:none;
+    transition:.3s;
+}
+
+.campo textarea{
+    resize:vertical;
+    min-height:90px;
+}
+
+.campo input:focus,
+.campo textarea:focus{
+    border-color:var(--secundario);
+    box-shadow:0 0 0 2px rgba(74,139,224,.12);
+}
+
+
+/* LOGO */
+
+.logo-empresa{
+    display:flex;
+    align-items:center;
+    gap:25px;
+}
+
+.logo-vista{
+    width:140px;
+    height:100px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:10px;
+    background:#f8f9fa;
+    border:1px solid var(--borde);
+    border-radius:8px;
+    overflow:hidden;
+}
+
+.logo-vista img{
+    max-width:100%;
+    max-height:100%;
+    object-fit:contain;
+}
+
+.sin-logo{
+    color:var(--texto);
+    font-size:13px;
+}
+
+.logo-info{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.logo-info strong{
+    color:var(--principal);
+    font-size:15px;
+}
+
+.logo-info span{
+    color:var(--texto);
+    font-size:13px;
+}
+
+
+/* ACCIONES */
+
+.acciones-formulario{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    padding-top:20px;
+    border-top:1px solid var(--borde);
+}
+
+
+/* BOTON EDITAR */
+
+.btn-editar{
+    padding:11px 24px;
+    border:none;
+    border-radius:8px;
+    background:var(--secundario);
+    color:var(--blanco);
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.btn-editar:hover{
+    background:var(--principal);
+}
+
+
+/* BOTON GUARDAR */
+
+.btn-guardar{
+    padding:11px 24px;
+    border:none;
+    border-radius:8px;
+    background:var(--principal);
+    color:var(--blanco);
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.btn-guardar:hover{
+    background:var(--secundario);
+}
+
+
+/* BOTON CANCELAR */
+
+.btn-cancelar{
+    padding:11px 24px;
+    border:none;
+    border-radius:8px;
+    background:#e74c3c;
+    color:var(--blanco);
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.btn-cancelar:hover{
+    background:#c0392b;
+}
+
+/* TABLET */
+
+@media(max-width:1000px){
+
+    .barra-superior,
+    .encabezado,
+    .formulario-configuracion{
+        width:100%;
+    }
+
+}
+
+
+/* MOVIL */
+
+@media(max-width:700px){
+
+    .contenido{
+        padding:20px;
+    }
+
+    .grupo-formulario{
+        grid-template-columns:1fr;
+        gap:0;
+    }
+
+    .encabezado{
+        padding:20px;
+    }
+
+    .encabezado h1{
+        font-size:28px;
+    }
+
+    .formulario-configuracion{
+        padding:20px;
+    }
+
+    .acciones-formulario{
+        justify-content:stretch;
+    }
+
+    .btn-guardar{
+        width:100%;
+    }
+
+    .logo-empresa{
+        flex-direction:column;
+        align-items:stretch;
+        gap:15px;
+    }
+
+    .logo-vista{
+        width:100%;
+        height:130px;
+    }
+
+}

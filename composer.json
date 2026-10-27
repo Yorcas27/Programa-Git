@@ -1,0 +1,15 @@
+{
+    "name": "yolmancastillo/ycl-solutions",
+    "description": "Sistema web YCL Solutions",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Yolman Castillo Legarda",
+            "email": "Yormancas89@hotmail.com"
+        }
+    ],
+    "require": {
+        "dompdf/dompdf": "^3.1",
+        "phpoffice/phpspreadsheet": "^5.10"
+    }
+}

@@ -1,0 +1,32 @@
+/* Fondo del sistema */
+
+.fondo-sistema {
+    position: fixed;
+
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    background-image:
+        linear-gradient(
+            rgba(234, 242, 251, .82),
+            rgba(234, 242, 251, .82)
+        ),
+        url("/YCL_Solutions/IMG/utencilios3.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    z-index: -1;
+    pointer-events: none;
+}
+
+
+/* Capa principal del sistema */
+
+body {
+    position: relative;
+    z-index: 0;
+}

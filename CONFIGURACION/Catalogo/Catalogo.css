@@ -1,0 +1,305 @@
+:root{
+
+    --principal:#1f3f6d;
+    --secundario:#4a8be0;
+    --fondo:#f4f6f9;
+    --texto:#666;
+    --blanco:#fff;
+    --borde:#ddd;
+
+}
+
+
+/* CONFIGURACIÓN GENERAL */
+
+*{
+
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+
+}
+
+
+body{
+
+    background:var(--fondo);
+    color:#333;
+    overflow-x:hidden;
+
+}
+
+
+/* CONTENIDO PRINCIPAL */
+
+.contenido{
+
+    width:100%;
+    min-height:100vh;
+
+    padding:30px 55px;
+
+    background:transparent;
+
+}
+
+
+/* BARRA SUPERIOR */
+
+.barra-superior{
+
+    width:100%;
+    max-width:1100px;
+    margin:0 auto 20px auto;
+
+}
+
+
+.btn-volver{
+
+    display:inline-block;
+    padding:10px 20px;
+    background:var(--principal);
+    color:var(--blanco);
+    text-decoration:none;
+    border-radius:8px;
+    font-size:15px;
+    font-weight:600;
+    transition:.3s;
+
+}
+
+
+.btn-volver:hover{
+
+    background:var(--secundario);
+
+}
+
+
+/* ENCABEZADO */
+
+.encabezado{
+
+    width:100%;
+    max-width:1100px;
+    margin:0 auto 25px auto;
+    padding:25px;
+
+    background:var(--blanco);
+    border-radius:12px;
+
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+
+}
+
+
+.encabezado h1{
+
+    margin-bottom:8px;
+
+    color:var(--principal);
+    font-size:32px;
+
+}
+
+
+.encabezado p{
+
+    color:var(--texto);
+    font-size:15px;
+    line-height:1.5;
+
+}
+
+
+/* MENÚ DE CATÁLOGO */
+
+.menu-catalogo{
+
+    width:100%;
+    max-width:1100px;
+    margin:0 auto;
+
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+
+}
+
+
+/* TARJETAS */
+
+.tarjeta-menu{
+
+    display:block;
+    min-height:150px;
+    padding:25px;
+
+    background:var(--blanco);
+    color:inherit;
+    text-decoration:none;
+
+    border-radius:12px;
+    border-left:5px solid var(--secundario);
+
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+}
+
+
+.tarjeta-menu:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 6px 15px rgba(0,0,0,.10);
+
+}
+
+
+/* NÚMERO */
+
+.numero-modulo{
+
+    display:block;
+
+    margin-bottom:16px;
+
+    color:var(--secundario);
+    font-size:14px;
+    font-weight:600;
+
+}
+
+
+/* TÍTULO */
+
+.tarjeta-menu h3{
+
+    margin-bottom:8px;
+
+    color:var(--principal);
+    font-size:20px;
+    font-weight:600;
+
+}
+
+
+/* DESCRIPCIÓN */
+
+.tarjeta-menu p{
+
+    color:var(--texto);
+    font-size:14px;
+    line-height:1.5;
+
+}
+
+
+/* COLOR PRODUCTOS */
+
+.productos{
+
+    border-left-color:#27ae60;
+
+}
+
+
+/* COLOR CATEGORÍAS */
+
+.categorias{
+
+    border-left-color:var(--secundario);
+
+}
+
+
+/* TABLET */
+
+@media(max-width:1000px){
+
+    .barra-superior,
+    .encabezado,
+    .menu-catalogo{
+
+        width:100%;
+
+    }
+
+}
+
+
+/* MÓVIL */
+
+@media(max-width:700px){
+
+    .contenido{
+
+        padding:20px;
+
+    }
+
+
+    .menu-catalogo{
+
+        grid-template-columns:1fr;
+        gap:15px;
+
+    }
+
+
+    .encabezado{
+
+        padding:20px;
+
+    }
+
+
+    .encabezado h1{
+
+        font-size:28px;
+
+    }
+
+
+    .tarjeta-menu{
+
+        padding:20px;
+
+    }
+
+}
+/* BOTÓN UNIVERSAL DE INICIO */
+
+.barra-superior .btn-inicio{
+
+    display:inline-block;
+
+    padding:10px 20px;
+
+   background:var(--principal);
+    color:var(--blanco);
+    text-decoration:none;
+
+    border-radius:8px;
+
+    font-size:15px;
+    font-weight:600;
+
+    box-shadow:0 3px 8px rgba(0,0,0,.10);
+
+    transition:.3s;
+
+}
+
+
+.barra-superior .btn-inicio:hover{
+
+    background:var(--principal);
+
+    transform:translateY(-1px);
+
+}

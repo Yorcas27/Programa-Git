@@ -1,0 +1,589 @@
+/* VARIABLES */
+:root{
+    --principal:#1f3f6d;
+    --secundario:#4a8be0;
+    --fondo:#f4f6f9;
+    --texto:#666;
+    --blanco:#fff;
+    --verde:#27ae60;
+    --rojo:#e74c3c;
+    --gris:#ddd;
+}
+
+/* GENERAL */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:var(--fondo);
+    color:#333;
+    overflow-x:hidden;
+}
+
+a{
+    text-decoration:none;
+}
+
+.contenido{
+    width:100%;
+    min-height:100vh;
+    padding:30px 55px;
+}
+
+/* BARRA SUPERIOR */
+.barra-superior{
+    width:100%;
+    max-width:1100px;
+    margin:0 auto 18px;
+    display:flex;
+    justify-content:flex-start;
+    align-items:center;
+    gap:10px;
+}
+
+.btn-volver{
+    display:inline-block;
+    padding:10px 20px;
+    background:var(--principal);
+    color:var(--blanco);
+    border-radius:8px;
+    font-size:15px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.btn-volver:hover{
+    background:var(--secundario);
+}
+
+/* BOTONES */
+.btn{
+    display:inline-block;
+    padding:10px 18px;
+    border:none;
+    border-radius:7px;
+    cursor:pointer;
+    font-size:14px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.btn:hover{
+    background:var(--secundario);
+}
+
+.btn-principal{
+    background:var(--principal);
+    color:var(--blanco);
+}
+
+.btn-principal:hover{
+    background:var(--secundario);
+}
+
+.btn-verde{
+    background:var(--principal);
+    color:var(--blanco);
+}
+
+.btn-eliminar{
+    background:var(--rojo);
+    color:var(--blanco);
+}
+
+.btn-eliminar:hover{
+    background:#c0392b;
+}
+
+/* BOTONES ESPECÍFICOS DE FORMULARIO */
+.btn-guardar{
+    background:var(--verde);
+    color:var(--blanco);
+}
+
+.btn-guardar:hover{
+    background:#219150;
+    color:var(--blanco);
+}
+
+.btn-cancelar{
+    background:var(--rojo);
+    color:var(--blanco);
+}
+
+.btn-cancelar:hover{
+    background:#c0392b;
+    color:var(--blanco);
+}
+
+/* ENCABEZADO */
+.encabezado{
+    width:100%;
+    max-width:1100px;
+    margin:0 auto 18px;
+    padding:20px 25px;
+    background:var(--blanco);
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+}
+
+.encabezado h1{
+    color:var(--principal);
+    font-size:30px;
+    margin-bottom:6px;
+}
+
+.encabezado p{
+    color:var(--texto);
+    font-size:15px;
+    line-height:1.4;
+}
+
+/* CARDS */
+.cards{
+    width:100%;
+    max-width:1100px;
+    margin:0 auto 20px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+}
+
+.card{
+    background:var(--blanco);
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+    border-top:4px solid var(--principal);
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-2px);
+    box-shadow:0 6px 15px rgba(0,0,0,.10);
+}
+
+.pendientes{
+    border-top-color:#e67e22;
+}
+
+.proceso{
+    border-top-color:#3498db;
+}
+
+.entregados{
+    border-top-color:var(--verde);
+}
+
+.total{
+    border-top-color:var(--principal);
+}
+
+.titulo-card{
+    color:var(--texto);
+    font-size:14px;
+    font-weight:600;
+}
+
+.card h2{
+    color:var(--principal);
+    font-size:24px;
+    margin:8px 0;
+}
+
+/* PANELES */
+.panel{
+    width:100%;
+    max-width:1100px;
+    margin:0 auto 16px;
+    padding:22px 25px;
+    background:var(--blanco);
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+}
+
+.panel-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    margin-bottom:14px;
+}
+
+.panel-header h2{
+    color:var(--principal);
+    font-size:20px;
+    margin-bottom:4px;
+}
+
+.panel-header p{
+    color:var(--texto);
+    font-size:14px;
+}
+
+/* ACCIONES */
+.barra-acciones{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:10px;
+}
+
+.barra-acciones input{
+    width:280px;
+    padding:9px 11px;
+    border:1px solid #ccc;
+    border-radius:7px;
+    outline:none;
+    font-size:14px;
+}
+
+.barra-acciones input:focus{
+    border-color:var(--secundario);
+}
+
+/* TABLAS */
+.tabla{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
+}
+
+.tabla th{
+    background:var(--principal);
+    color:var(--blanco);
+    padding:11px 12px;
+    text-align:left;
+    font-size:14px;
+    font-weight:600;
+}
+
+.tabla td{
+    padding:11px 12px;
+    border-bottom:1px solid var(--gris);
+    vertical-align:middle;
+    color:#555;
+    font-size:14px;
+}
+
+.tabla tbody tr{
+    transition:.2s;
+}
+
+.tabla tbody tr:hover,
+.tabla tbody tr:hover td{
+    background:#f4f8fc;
+}
+
+.acciones{
+    display:flex;
+    gap:7px;
+    flex-wrap:wrap;
+}
+
+/* BOTONES DE ACCIONES */
+.btn-ver{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:6px 10px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    color:var(--blanco);
+    font-family:"Segoe UI",sans-serif;
+    font-size:13px;
+    font-weight:600;
+    transition:.3s;
+    background:var(--verde);
+}
+
+.btn-ver:hover{
+    background:#219653;
+}
+
+.btn-editar{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:6px 10px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    color:var(--blanco);
+    font-family:"Segoe UI",sans-serif;
+    font-size:13px;
+    font-weight:600;
+    transition:.3s;
+    background:var(--secundario);
+}
+
+.btn-editar:hover{
+    background:#357abd;
+}
+
+/* FORMULARIOS */
+.formulario{
+    width:100%;
+}
+
+.grupo-formulario{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    column-gap:18px;
+    row-gap:10px;
+}
+
+.campo{
+    display:flex;
+    flex-direction:column;
+    margin-bottom:3px;
+}
+
+.campo label{
+    margin-bottom:5px;
+    color:var(--principal);
+    font-size:14px;
+    font-weight:600;
+}
+
+.campo input,
+.campo select,
+.campo textarea{
+    width:100%;
+    padding:9px 12px;
+    border:1px solid #d6dce5;
+    border-radius:7px;
+    background:var(--blanco);
+    color:#333;
+    font-size:14px;
+    transition:.3s;
+}
+
+.campo input,
+.campo select{
+    height:42px;
+}
+
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus{
+    outline:none;
+    border-color:var(--secundario);
+    box-shadow:0 0 5px rgba(74,139,224,.20);
+}
+
+.campo textarea{
+    resize:vertical;
+    min-height:75px;
+}
+
+.campo-completo{
+    grid-column:1 / -1;
+}
+
+/* CLIENTE REGISTRADO */
+.campo-cliente-registrado{
+    width:100%;
+    grid-column:1;
+}
+
+/* TIPO DE CLIENTE */
+.tipo-cliente{
+    display:flex;
+    align-items:center;
+    gap:25px;
+    min-height:42px;
+    padding:2px 0;
+}
+
+.tipo-cliente label{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    margin:0;
+    color:#555;
+    font-size:14px;
+    font-weight:500;
+    cursor:pointer;
+}
+
+.tipo-cliente input[type="radio"]{
+    width:18px;
+    height:18px;
+    margin:0;
+    cursor:pointer;
+    accent-color:var(--principal);
+}
+
+/* BOTONES DEL FORMULARIO */
+.botones-formulario{
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    gap:10px;
+    margin-top:18px;
+}
+
+.botones-formulario .btn{
+    min-width:110px;
+    text-align:center;
+    padding:9px 16px;
+}
+
+/* CAMPOS BLOQUEADOS */
+input[readonly],
+textarea[readonly]{
+    background:#f8f9fa;
+    cursor:default;
+}
+
+/* INICIO */
+a.btn-inicio{
+    display:inline-block;
+    padding:10px 20px;
+    background:var(--principal);
+    color:var(--blanco);
+    border-radius:8px;
+    font-size:15px;
+    font-weight:600;
+    box-shadow:0 3px 8px rgba(0,0,0,.10);
+    transition:.3s;
+}
+
+a.btn-inicio:hover{
+    background:var(--secundario);
+    transform:translateY(-1px);
+}
+
+/* MENSAJE */
+.mensaje-error{
+    margin-bottom:15px;
+    padding:10px 14px;
+    background:#fceaea;
+    color:#c0392b;
+    border-radius:7px;
+    font-size:14px;
+}
+
+/* RESPONSIVE */
+@media(max-width:1200px){
+
+    .cards{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:800px){
+
+    .contenido{
+        padding:20px;
+    }
+
+    .panel-header{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .barra-acciones{
+        width:100%;
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .barra-acciones input{
+        width:100%;
+    }
+
+    .grupo-formulario{
+        grid-template-columns:1fr;
+        row-gap:10px;
+    }
+
+    .campo-completo{
+        grid-column:1;
+    }
+
+    .campo-cliente-registrado{
+        width:100%;
+        grid-column:1;
+    }
+
+    .acciones{
+        flex-direction:column;
+    }
+
+    .tipo-cliente{
+        flex-wrap:wrap;
+        gap:15px;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .cards{
+        grid-template-columns:1fr;
+    }
+
+    .botones-formulario{
+        flex-direction:column;
+    }
+
+    .botones-formulario .btn{
+        width:100%;
+    }
+
+    .barra-superior{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .btn-volver,
+    .btn-inicio{
+        text-align:center;
+    }
+
+}
+/* BOTÓN ELIMINAR EN ÓRDENES PENDIENTES DE DEPURACIÓN */
+
+.btn-eliminar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 95px;
+    padding: 8px 14px;
+    background-color: #e74c3c;
+    color: #ffffff;
+    border: 1px solid #e74c3c;
+    border-radius: 5px;
+    font-family: "Segoe UI", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.2;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-eliminar:hover {
+    background-color: #c0392b;
+    border-color: #c0392b;
+    color: #ffffff;
+}
+
+.btn-eliminar:focus-visible {
+    outline: 2px solid #1f3f6d;
+    outline-offset: 2px;
+}
+
+.btn-eliminar:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
