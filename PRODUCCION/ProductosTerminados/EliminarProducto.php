@@ -1,3 +1,4 @@
+
 <?php
 require_once("../../includes/conexion.php");
 
@@ -6,7 +7,9 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     exit;
 }
 
-$id = isset($_POST["id"]) ? (int)$_POST["id"] : 0;
+$id = isset($_POST["id_producto_terminado"])
+    ? (int)$_POST["id_producto_terminado"]
+    : 0;
 
 if ($id <= 0) {
     header("Location: ProductosTerminados.php?eliminacion=error");
@@ -21,12 +24,20 @@ $stmt = $conexion->prepare("
 ");
 
 if (!$stmt) {
+    error_log("Error al preparar eliminación de producto: " . $conexion->error);
     header("Location: ProductosTerminados.php?eliminacion=error");
     exit;
 }
 
 $stmt->bind_param("i", $id);
-$stmt->execute();
+
+if (!$stmt->execute()) {
+    error_log("Error al eliminar producto terminado: " . $stmt->error);
+    $stmt->close();
+    header("Location: ProductosTerminados.php?eliminacion=error");
+    exit;
+}
+
 $eliminados = $stmt->affected_rows;
 $stmt->close();
 

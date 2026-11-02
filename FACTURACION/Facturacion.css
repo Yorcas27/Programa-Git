@@ -1090,3 +1090,60 @@ button.eliminar:hover{
         width:100%;
     }
 }
+
+/* =========================================================
+   NOTIFICACIONES TEMPORALES Y ANULAR FACTURA
+   ========================================================= */
+
+/* ENTRADA DE LA NOTIFICACIÓN */
+.notificacion-temporal{
+    animation:entradaNotificacion .35s ease both;
+    box-shadow:0 5px 16px rgba(0,0,0,.07);
+}
+
+@keyframes entradaNotificacion{
+    from{
+        opacity:0;
+        transform:translateY(-12px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* BOTÓN ANULAR FACTURA */
+.ver-factura-acciones .btn-anular-factura{
+    background:#c0392b;
+    color:#fff;
+    border:1px solid #c0392b;
+    transition:background .25s ease,transform .25s ease,box-shadow .25s ease;
+}
+
+.ver-factura-acciones .btn-anular-factura:hover{
+    background:#a93226;
+    border-color:#a93226;
+    color:#fff;
+    transform:translateY(-2px);
+    box-shadow:0 4px 10px rgba(192,57,43,.22);
+}
+
+.ver-factura-acciones .btn-anular-factura:active{
+    transform:translateY(0);
+}
+
+@media(max-width:600px){
+    .ver-factura-acciones .btn-anular-factura{
+        width:100%;
+    }
+}
+
+@media(prefers-reduced-motion:reduce){
+    .notificacion-temporal{
+        animation:none;
+    }
+
+    .mensaje-facturacion{
+        transition:none;
+    }
+}

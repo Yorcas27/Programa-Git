@@ -1,3 +1,4 @@
+
 <?php
 $titulo = "FACTURAR VENTA DIRECTA";
 $css = "Facturacion.css";
@@ -41,9 +42,11 @@ function obtenerCarritoDirecto(): array {
 $carrito = obtenerCarritoDirecto();
 
 if (empty($carrito) && !isset($_POST["confirmar_factura"])) {
-    header("Location: Catalogos.php");
+    header("Location: ../CATALOGOS/Catalogos.php");
     exit;
 }
+
+/* CONSULTAR PRODUCTOS SELECCIONADOS */
 
 try {
     if (!empty($carrito)) {
@@ -100,10 +103,17 @@ $subtotal = round($subtotal, 2);
 $iva = round($subtotal * 0.19, 2);
 $total = round($subtotal + $iva, 2);
 
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["confirmar_factura"]) && $error === "") {
+/* CONFIRMAR FACTURA Y DESCONTAR INVENTARIO */
+
+if (
+    $_SERVER["REQUEST_METHOD"] === "POST"
+    && isset($_POST["confirmar_factura"])
+    && $error === ""
+) {
     $tipoCliente = $_POST["tipo_cliente"] ?? "ocasional";
     $metodo = $_POST["metodo_pago"] ?? "";
     $estado = $_POST["estado"] ?? "Pendiente";
+
     $idCliente = null;
     $nombreCliente = trim($_POST["nombre_cliente"] ?? "");
     $documentoCliente = trim($_POST["documento_cliente"] ?? "");
@@ -112,10 +122,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["confirmar_factura"]) 
 
     if (empty($productos)) {
         $error = "No hay productos válidos para facturar.";
+
+    } elseif (!in_array($tipoCliente, ["ocasional", "registrado"], true)) {
+        $error = "Selecciona un tipo de cliente válido.";
+
     } elseif (!in_array($metodo, ["Efectivo", "Transferencia", "Tarjeta"], true)) {
         $error = "Selecciona un medio de pago válido.";
+
     } elseif (!in_array($estado, ["Pendiente", "Pagada"], true)) {
         $error = "Selecciona un estado válido.";
+
+    } elseif (
+        $correoCliente !== ""
+        && !filter_var($correoCliente, FILTER_VALIDATE_EMAIL)
+        && $tipoCliente === "ocasional"
+    ) {
+        $error = "El correo electrónico ingresado no tiene un formato válido.";
+
     } elseif ($tipoCliente === "registrado") {
         $idCliente = filter_var($_POST["id_cliente"] ?? "", FILTER_VALIDATE_INT);
 
@@ -128,6 +151,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["confirmar_factura"]) 
                  WHERE id_cliente = ? AND estado = 'Activo'
                  LIMIT 1"
             );
+
             $stmt->bind_param("i", $idCliente);
             $stmt->execute();
             $cliente = $stmt->get_result()->fetch_assoc();
@@ -142,13 +166,67 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["confirmar_factura"]) 
                 $correoCliente = $cliente["correo"] ?? "";
             }
         }
-    } elseif ($nombreCliente === "") {
-        $error = "Ingresa el nombre del cliente ocasional.";
     }
 
     if ($error === "") {
         try {
             $conexion->begin_transaction();
+
+            /*
+             * BLOQUEAR Y VALIDAR EXISTENCIAS
+             * Cada presentación tiene su propio id_producto.
+             */
+
+            $existencias = [];
+
+            foreach ($productos as $producto) {
+                $idProducto = (int)$producto["id"];
+                $cantidadSolicitada = (int)$producto["cantidad"];
+
+                $stmt = $conexion->prepare(
+                    "INSERT IGNORE INTO inventario_productos_terminados
+                     (id_producto, stock, stock_minimo)
+                     VALUES (?, 0, 0)"
+                );
+
+                $stmt->bind_param("i", $idProducto);
+                $stmt->execute();
+                $stmt->close();
+
+                $stmt = $conexion->prepare(
+                    "SELECT stock
+                     FROM inventario_productos_terminados
+                     WHERE id_producto = ?
+                     FOR UPDATE"
+                );
+
+                $stmt->bind_param("i", $idProducto);
+                $stmt->execute();
+                $inventario = $stmt->get_result()->fetch_assoc();
+                $stmt->close();
+
+                if (!$inventario) {
+                    throw new RuntimeException(
+                        "No fue posible consultar el inventario de "
+                        . $producto["nombre"] . " (" . $producto["presentacion"] . ")."
+                    );
+                }
+
+                $stockActual = (float)$inventario["stock"];
+
+                if ($cantidadSolicitada > $stockActual) {
+                    throw new RuntimeException(
+                        "Existencias insuficientes para "
+                        . $producto["nombre"] . " (" . $producto["presentacion"] . "). "
+                        . "Disponibles: " . number_format($stockActual, 0, ",", ".")
+                        . ". Solicitadas: " . $cantidadSolicitada . "."
+                    );
+                }
+
+                $existencias[$idProducto] = $stockActual;
+            }
+
+            /* GENERAR NÚMERO DE FACTURA */
 
             $consulta = $conexion->query(
                 "SELECT numero_factura
@@ -159,19 +237,40 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["confirmar_factura"]) 
             );
 
             $ultima = $consulta->fetch_assoc();
+
             $numeroAnterior = (int)preg_replace(
                 "/\D/",
                 "",
                 $ultima["numero_factura"] ?? "FAC000"
             );
-            $numeroFactura = "FAC" . str_pad((string)($numeroAnterior + 1), 3, "0", STR_PAD_LEFT);
+
+            $numeroFactura = "FAC" . str_pad(
+                (string)($numeroAnterior + 1),
+                3,
+                "0",
+                STR_PAD_LEFT
+            );
+
+            /* INSERTAR FACTURA */
 
             $sqlFactura = "INSERT INTO facturas
-                (numero_factura, id_pedido, id_cliente, fecha, metodo_pago, estado,
-                 total, nombre_cliente, documento_cliente, telefono_cliente, correo_cliente)
+                (
+                    numero_factura,
+                    id_pedido,
+                    id_cliente,
+                    fecha,
+                    metodo_pago,
+                    estado,
+                    total,
+                    nombre_cliente,
+                    documento_cliente,
+                    telefono_cliente,
+                    correo_cliente
+                )
                 VALUES (?, NULL, ?, CURDATE(), ?, ?, ?, ?, ?, ?, ?)";
 
             $stmt = $conexion->prepare($sqlFactura);
+
             $stmt->bind_param(
                 "sissdssss",
                 $numeroFactura,
@@ -184,9 +283,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["confirmar_factura"]) 
                 $telefonoCliente,
                 $correoCliente
             );
+
             $stmt->execute();
             $idFactura = $conexion->insert_id;
             $stmt->close();
+
+            /* INSERTAR DETALLES Y DESCONTAR EXISTENCIAS */
 
             $stmtDetalle = $conexion->prepare(
                 "INSERT INTO detalle_factura
@@ -194,11 +296,32 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["confirmar_factura"]) 
                  VALUES (?, ?, ?, ?, ?)"
             );
 
+            $stmtActualizar = $conexion->prepare(
+                "UPDATE inventario_productos_terminados
+                 SET stock = stock - ?
+                 WHERE id_producto = ?
+                   AND stock >= ?"
+            );
+
+            $stmtMovimiento = $conexion->prepare(
+                "INSERT INTO movimientos_productos_terminados
+                 (
+                     id_producto,
+                     tipo,
+                     cantidad,
+                     stock_anterior,
+                     stock_resultante,
+                     id_detalle_factura,
+                     observaciones
+                 )
+                 VALUES (?, 'Salida', ?, ?, ?, ?, ?)"
+            );
+
             foreach ($productos as $producto) {
-                $idProducto = $producto["id"];
-                $cantidad = $producto["cantidad"];
-                $precio = $producto["precio"];
-                $linea = $producto["subtotal"];
+                $idProducto = (int)$producto["id"];
+                $cantidad = (int)$producto["cantidad"];
+                $precio = (float)$producto["precio"];
+                $linea = (float)$producto["subtotal"];
 
                 $stmtDetalle->bind_param(
                     "iiidd",
@@ -208,20 +331,65 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["confirmar_factura"]) 
                     $precio,
                     $linea
                 );
+
                 $stmtDetalle->execute();
+                $idDetalleFactura = $conexion->insert_id;
+
+                $stockAnterior = $existencias[$idProducto];
+                $stockResultante = $stockAnterior - $cantidad;
+
+                $stmtActualizar->bind_param(
+                    "iid",
+                    $cantidad,
+                    $idProducto,
+                    $cantidad
+                );
+
+                $stmtActualizar->execute();
+
+                if ($stmtActualizar->affected_rows !== 1) {
+                    throw new RuntimeException(
+                        "No fue posible actualizar las existencias del producto."
+                    );
+                }
+
+                $observaciones = "Salida por venta directa. Factura " . $numeroFactura . ".";
+
+                $stmtMovimiento->bind_param(
+                    "idddis",
+                    $idProducto,
+                    $cantidad,
+                    $stockAnterior,
+                    $stockResultante,
+                    $idDetalleFactura,
+                    $observaciones
+                );
+
+                $stmtMovimiento->execute();
             }
 
             $stmtDetalle->close();
+            $stmtActualizar->close();
+            $stmtMovimiento->close();
+
             $conexion->commit();
 
             header("Location: VerFactura.php?id_factura=" . $idFactura);
             exit;
+
         } catch (Throwable $e) {
             $conexion->rollback();
-            $error = "No fue posible guardar la factura. Verifica los datos y vuelve a intentarlo.";
+
+            error_log("Error al generar factura directa: " . $e->getMessage());
+
+            $error = $e instanceof RuntimeException
+                ? $e->getMessage()
+                : "No fue posible guardar la factura. No se realizaron cambios en el inventario.";
         }
     }
 }
+
+/* CARGAR CLIENTES REGISTRADOS */
 
 $clientes = [];
 
@@ -245,7 +413,7 @@ include("../includes/header.php");
 
 <main class="contenido">
     <section class="barra-superior">
-        <a href="../CATALOGOS/Catalogos.php" class=" btn-volver">← Volver al Catálogo</a>
+        <a href="../CATALOGOS/Catalogos.php" class="btn-volver">← Volver al Catálogo</a>
     </section>
 
     <section class="encabezado">
@@ -296,101 +464,103 @@ include("../includes/header.php");
         </div>
     </section>
 
-    
-<section class="panel">
-    <h2>Datos de facturación</h2>
+    <section class="panel">
+        <h2>Datos de facturación</h2>
 
-    <form method="POST" class="formulario-directa">
-        <?php foreach ($productos as $producto): ?>
-            <input type="hidden" name="productos[]" value="<?= $producto["id"] ?>">
-            <input type="hidden" name="cantidades[]" value="<?= $producto["cantidad"] ?>">
-        <?php endforeach; ?>
+        <form method="POST" class="formulario-directa">
+            <?php foreach ($productos as $producto): ?>
+                <input type="hidden" name="productos[]" value="<?= $producto["id"] ?>">
+                <input type="hidden" name="cantidades[]" value="<?= $producto["cantidad"] ?>">
+            <?php endforeach; ?>
 
-        <div class="campo-directa campo-tipo-cliente">
-            <label for="tipo_cliente">Tipo de cliente</label>
-            <select name="tipo_cliente" id="tipo_cliente" required onchange="cambiarTipoCliente()">
-                <option value="ocasional">Cliente ocasional</option>
-                <option value="registrado">Cliente registrado</option>
-            </select>
-        </div>
-
-        <div id="datosOcasional" class="datos-cliente-directa">
-            <div class="campo-directa">
-                <label for="nombre_cliente">Nombre del cliente *</label>
-                <input type="text" name="nombre_cliente" id="nombre_cliente" maxlength="150">
-            </div>
-
-            <div class="campo-directa">
-                <label for="documento_cliente">Documento</label>
-                <input type="text" name="documento_cliente" id="documento_cliente" maxlength="50">
-            </div>
-
-            <div class="campo-directa">
-                <label for="telefono_cliente">Teléfono</label>
-                <input type="text" name="telefono_cliente" id="telefono_cliente" maxlength="30">
-            </div>
-
-            <div class="campo-directa">
-                <label for="correo_cliente">Correo</label>
-                <input type="email" name="correo_cliente" id="correo_cliente" maxlength="150">
-            </div>
-        </div>
-
-        <div id="datosRegistrado" class="datos-cliente-directa" style="display:none;">
-            <div class="campo-directa">
-                <label for="id_cliente">Seleccionar cliente *</label>
-                <select name="id_cliente" id="id_cliente">
-                    <option value="">Selecciona un cliente</option>
-                    <?php foreach ($clientes as $cliente): ?>
-                        <option value="<?= (int)$cliente["id_cliente"] ?>">
-                            <?= htmlspecialchars($cliente["nombre"] . " - " . $cliente["documento"]) ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-        </div>
-
-        <div class="opciones-factura-directa">
-            <div class="campo-directa">
-                <label for="metodo_pago">Medio de pago</label>
-                <select name="metodo_pago" id="metodo_pago" required>
-                    <option value="Efectivo">Efectivo</option>
-                    <option value="Transferencia">Transferencia</option>
-                    <option value="Tarjeta">Tarjeta</option>
+            <div class="campo-directa campo-tipo-cliente">
+                <label for="tipo_cliente">Tipo de cliente</label>
+                <select name="tipo_cliente" id="tipo_cliente" required onchange="cambiarTipoCliente()">
+                    <option value="ocasional">Cliente ocasional</option>
+                    <option value="registrado">Cliente registrado</option>
                 </select>
             </div>
 
-            <div class="campo-directa">
-                <label for="estado">Estado de la factura</label>
-                <select name="estado" id="estado" required>
-                    <option value="Pendiente">Pendiente</option>
-                    <option value="Pagada">Pagada</option>
-                </select>
+            <div id="datosOcasional" class="datos-cliente-directa">
+                <div class="campo-directa">
+                    <label for="nombre_cliente">Nombre del cliente</label>
+                    <input type="text" name="nombre_cliente" id="nombre_cliente" maxlength="150">
+                </div>
+
+                <div class="campo-directa">
+                    <label for="documento_cliente">Documento</label>
+                    <input type="text" name="documento_cliente" id="documento_cliente" maxlength="50">
+                </div>
+
+                <div class="campo-directa">
+                    <label for="telefono_cliente">Teléfono</label>
+                    <input type="text" name="telefono_cliente" id="telefono_cliente" maxlength="30">
+                </div>
+
+                <div class="campo-directa">
+                    <label for="correo_cliente">Correo</label>
+                    <input type="email" name="correo_cliente" id="correo_cliente" maxlength="150">
+                </div>
             </div>
-        </div>
 
-        <div class="acciones-directa">
-            <button type="submit" name="confirmar_factura" value="1"
-                    <?= empty($productos) ? "disabled" : "" ?>>
-                Generar factura
-            </button>
+            <div id="datosRegistrado" class="datos-cliente-directa" style="display:none;">
+                <div class="campo-directa">
+                    <label for="id_cliente">Seleccionar cliente</label>
+                    <select name="id_cliente" id="id_cliente">
+                        <option value="">Selecciona un cliente</option>
+                        <?php foreach ($clientes as $cliente): ?>
+                            <option value="<?= (int)$cliente["id_cliente"] ?>">
+                                <?= htmlspecialchars($cliente["nombre"] . " - " . $cliente["documento"]) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
 
-            <a href="../CATALOGOS/Catalogos.php" class="btn-cancelar-directa">
-                Cancelar
-            </a>
-        </div>
-    </form>
-</section>
+            <div class="opciones-factura-directa">
+                <div class="campo-directa">
+                    <label for="metodo_pago">Medio de pago</label>
+                    <select name="metodo_pago" id="metodo_pago" required>
+                        <option value="Efectivo">Efectivo</option>
+                        <option value="Transferencia">Transferencia</option>
+                        <option value="Tarjeta">Tarjeta</option>
+                    </select>
+                </div>
+
+                <div class="campo-directa">
+                    <label for="estado">Estado de la factura</label>
+                    <select name="estado" id="estado" required>
+                        <option value="Pendiente">Pendiente</option>
+                        <option value="Pagada">Pagada</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="acciones-directa">
+                <button type="submit" name="confirmar_factura" value="1"
+                        <?= empty($productos) ? "disabled" : "" ?>>
+                    Generar factura
+                </button>
+
+                <a href="../CATALOGOS/Catalogos.php" class="btn-cancelar-directa">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </section>
 </main>
 
 <script>
 function cambiarTipoCliente() {
     const registrado = document.getElementById("tipo_cliente").value === "registrado";
-    document.getElementById("datosRegistrado").style.display = registrado ? "block" : "none";
-    document.getElementById("datosOcasional").style.display = registrado ? "none" : "block";
+
+    document.getElementById("datosRegistrado").style.display =
+        registrado ? "block" : "none";
+
+    document.getElementById("datosOcasional").style.display =
+        registrado ? "none" : "block";
 
     document.getElementById("id_cliente").required = registrado;
-    document.getElementById("nombre_cliente").required = !registrado;
 }
 
 cambiarTipoCliente();

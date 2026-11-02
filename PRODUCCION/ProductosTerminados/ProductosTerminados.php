@@ -13,11 +13,10 @@ function formatoCantidad($cantidad) {
 
 /* PRODUCTOS DE LOS ÚLTIMOS 30 DÍAS */
 $sql = "
-    SELECT pt.*, op.id_orden
-    FROM productos_terminados pt
-    LEFT JOIN ordenes_produccion op ON pt.id_orden = op.id_orden
-    WHERE pt.fecha >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
-    ORDER BY pt.fecha DESC
+    SELECT *
+    FROM productos_terminados
+    WHERE fecha >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
+    ORDER BY fecha DESC
 ";
 $resultado = $conexion->query($sql);
 
@@ -27,11 +26,10 @@ if (!$resultado) {
 
 /* PRODUCTOS ANTERIORES PARA DEPURACIÓN */
 $sqlDepuracion = "
-    SELECT pt.*, op.id_orden
-    FROM productos_terminados pt
-    LEFT JOIN ordenes_produccion op ON pt.id_orden = op.id_orden
-    WHERE pt.fecha < DATE_SUB(CURDATE(), INTERVAL 30 DAY)
-    ORDER BY pt.fecha DESC
+    SELECT *
+    FROM productos_terminados
+    WHERE fecha < DATE_SUB(CURDATE(), INTERVAL 30 DAY)
+    ORDER BY fecha DESC
 ";
 $resultadoDepuracion = $conexion->query($sqlDepuracion);
 
@@ -44,15 +42,21 @@ $mensaje = "";
 $tipoMensaje = "";
 
 if (isset($_GET["eliminacion"])) {
-    if ($_GET["eliminacion"] === "correcta") {
-        $mensaje = "Producto eliminado correctamente.";
-        $tipoMensaje = "exito";
-    } elseif ($_GET["eliminacion"] === "error") {
-        $mensaje = "No fue posible eliminar el producto.";
-        $tipoMensaje = "error";
-    } elseif ($_GET["eliminacion"] === "orden") {
-        $mensaje = "No se puede eliminar un producto asociado a una orden de producción.";
-        $tipoMensaje = "error";
+    switch ($_GET["eliminacion"]) {
+        case "correcta":
+            $mensaje = "Producto eliminado correctamente.";
+            $tipoMensaje = "exito";
+            break;
+
+        case "error":
+            $mensaje = "No fue posible eliminar el producto.";
+            $tipoMensaje = "error";
+            break;
+
+        case "no_permitida":
+            $mensaje = "No se puede eliminar el producto porque no cumple las condiciones de depuración o está asociado a una orden.";
+            $tipoMensaje = "error";
+            break;
     }
 }
 ?>
@@ -62,6 +66,7 @@ if (isset($_GET["eliminacion"])) {
         <a href="../Produccion/Produccion.php" class="btn-volver">
             ← Volver a Producción
         </a>
+
         <a href="/YCL_Solutions/DASHBOARD/Dashboard.php" class="btn-inicio">
             Inicio
         </a>
@@ -77,8 +82,11 @@ if (isset($_GET["eliminacion"])) {
             <div id="mensajeSistema"
                  class="mensaje-contenedor mensaje-<?= htmlspecialchars($tipoMensaje) ?>">
                 <span><?= htmlspecialchars($mensaje) ?></span>
+
                 <button type="button" class="cerrar-mensaje"
-                        onclick="cerrarMensaje()" aria-label="Cerrar mensaje">&times;</button>
+                        onclick="cerrarMensaje()" aria-label="Cerrar mensaje">
+                    &times;
+                </button>
             </div>
         <?php endif; ?>
 
@@ -94,7 +102,7 @@ if (isset($_GET["eliminacion"])) {
                 </div>
 
                 <button type="button" class="btn-nuevo" onclick="irANuevaOrden()">
-                    + Nuevo producto
+                    + Nueva orden
                 </button>
             </div>
 
@@ -112,19 +120,25 @@ if (isset($_GET["eliminacion"])) {
                             <th>Acciones</th>
                         </tr>
                     </thead>
+
                     <tbody>
                         <?php if ($resultado->num_rows > 0): ?>
                             <?php while ($producto = $resultado->fetch_assoc()): ?>
                                 <tr>
                                     <td><?= htmlspecialchars($producto["codigo"] ?? "") ?></td>
+
                                     <td>
                                         <?= !empty($producto["fecha"])
                                             ? date("d/m/Y", strtotime($producto["fecha"]))
                                             : "" ?>
                                     </td>
+
                                     <td><?= htmlspecialchars($producto["producto"] ?? "") ?></td>
+
                                     <td><?= formatoCantidad($producto["cantidad"] ?? 0) ?></td>
+
                                     <td><?= htmlspecialchars($producto["estado"] ?? "") ?></td>
+
                                     <td class="acciones">
                                         <a href="VerProducto.php?id=<?= (int)$producto["id_producto_terminado"] ?>"
                                            class="btn-ver">Ver</a>
@@ -156,19 +170,25 @@ if (isset($_GET["eliminacion"])) {
                             <th>Acciones</th>
                         </tr>
                     </thead>
+
                     <tbody>
                         <?php if ($resultadoDepuracion->num_rows > 0): ?>
                             <?php while ($producto = $resultadoDepuracion->fetch_assoc()): ?>
                                 <tr>
                                     <td><?= htmlspecialchars($producto["codigo"] ?? "") ?></td>
+
                                     <td>
                                         <?= !empty($producto["fecha"])
                                             ? date("d/m/Y", strtotime($producto["fecha"]))
                                             : "" ?>
                                     </td>
+
                                     <td><?= htmlspecialchars($producto["producto"] ?? "") ?></td>
+
                                     <td><?= formatoCantidad($producto["cantidad"] ?? 0) ?></td>
+
                                     <td><?= htmlspecialchars($producto["estado"] ?? "") ?></td>
+
                                     <td class="acciones">
                                         <a href="VerProducto.php?id=<?= (int)$producto["id_producto_terminado"] ?>"
                                            class="btn-ver">Ver</a>
@@ -176,9 +196,11 @@ if (isset($_GET["eliminacion"])) {
                                         <?php if (empty($producto["id_orden"])): ?>
                                             <form action="EliminarProducto.php" method="POST"
                                                   onsubmit="return confirm('¿Estás seguro de eliminar este producto?');">
+
                                                 <input type="hidden"
                                                        name="id_producto_terminado"
                                                        value="<?= (int)$producto["id_producto_terminado"] ?>">
+
                                                 <button type="submit" class="btn-eliminar">
                                                     Eliminar
                                                 </button>
@@ -189,7 +211,9 @@ if (isset($_GET["eliminacion"])) {
                             <?php endwhile; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="6">No hay productos anteriores para depuración.</td>
+                                <td colspan="6">
+                                    No hay productos anteriores para depuración.
+                                </td>
                             </tr>
                         <?php endif; ?>
                     </tbody>
@@ -217,13 +241,15 @@ function refrescarProductos() {
 }
 
 function irANuevaOrden() {
-    alert("Los productos terminados se registran automáticamente al finalizar una orden de producción. Serás dirigido al módulo de Órdenes de Producción.");
-    window.location.href = "/YCL_SOLUTIONS/PRODUCCION/OrdenesProduccion/NuevaOrden.php";
+    window.location.href = "/YCL_Solutions/PRODUCCION/OrdenesProduccion/NuevaOrden.php";
 }
 
 function cerrarMensaje() {
     const mensaje = document.getElementById("mensajeSistema");
-    if (mensaje) mensaje.classList.add("oculto");
+
+    if (mensaje) {
+        mensaje.classList.add("oculto");
+    }
 }
 
 document.addEventListener("DOMContentLoaded", function() {

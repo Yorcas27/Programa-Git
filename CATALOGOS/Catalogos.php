@@ -1,3 +1,4 @@
+
 <?php
 $titulo = "CATÁLOGO DE PRODUCTOS";
 $css = "Catalogos.css";
@@ -18,7 +19,8 @@ try {
                 COALESCE(NULLIF(pp.nombre, ''), p.nombre) AS nombre_catalogo,
                 COALESCE(NULLIF(pp.descripcion, ''), p.descripcion) AS descripcion_catalogo,
                 COALESCE(NULLIF(pp.imagen, ''), NULLIF(p.imagen, '')) AS imagen_catalogo,
-                COALESCE(cpp.nombre, cp.nombre) AS categoria
+                COALESCE(cpp.nombre, cp.nombre) AS categoria,
+                COALESCE(ipt.stock, 0) AS stock
             FROM productos p
             LEFT JOIN productos_principales pp
                 ON pp.id_producto_principal = p.id_producto_principal
@@ -26,6 +28,8 @@ try {
                 ON cp.id_categoria_producto = p.id_categoria_producto
             LEFT JOIN categorias_producto cpp
                 ON cpp.id_categoria_producto = pp.id_categoria_producto
+            LEFT JOIN inventario_productos_terminados ipt
+                ON ipt.id_producto = p.id_producto
             WHERE LOWER(p.estado) = 'activo'
               AND (
                     (p.id_producto_principal IS NULL AND cp.estado = 'Activa')
@@ -59,11 +63,13 @@ try {
         $catalogo[$clave]["presentaciones"][] = [
             "id" => (int)$fila["id_producto"],
             "nombre" => $fila["presentacion"] ?: "Única",
-            "precio" => (float)$fila["precio"]
+            "precio" => (float)$fila["precio"],
+            "stock" => max(0, (float)$fila["stock"])
         ];
     }
 } catch (mysqli_sql_exception $e) {
     $errorCatalogo = true;
+    error_log("Error al cargar catálogo: " . $e->getMessage());
 }
 
 include("../includes/header.php");
@@ -77,7 +83,7 @@ include("../includes/header.php");
     </section>
 
     <section class="encabezado">
-        <h1><?= htmlspecialchars($titulo) ?></h1>
+        <h1><?= htmlspecialchars($titulo, ENT_QUOTES, "UTF-8") ?></h1>
         <p>Consulta los productos disponibles para venta directa.</p>
     </section>
 
@@ -141,13 +147,16 @@ include("../includes/header.php");
                     $rutaImagen = $imagen !== ""
                         ? "/YCL_Solutions/" . ltrim($imagen, "/")
                         : "";
+
+                    $stockInicial = $primeraPresentacion["stock"];
+                    $unidadesIniciales = (int)floor($stockInicial);
                     ?>
 
                     <article class="producto-card">
                         <div class="producto-imagen">
                             <?php if ($rutaImagen !== ""): ?>
-                                <img src="<?= htmlspecialchars($rutaImagen) ?>"
-                                     alt="<?= htmlspecialchars($producto["nombre"]) ?>"
+                                <img src="<?= htmlspecialchars($rutaImagen, ENT_QUOTES, "UTF-8") ?>"
+                                     alt="<?= htmlspecialchars($producto["nombre"], ENT_QUOTES, "UTF-8") ?>"
                                      loading="lazy"
                                      onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
 
@@ -159,26 +168,28 @@ include("../includes/header.php");
 
                         <div class="producto-info">
                             <span class="producto-codigo">
-                                <?= htmlspecialchars($producto["categoria"]) ?>
+                                <?= htmlspecialchars($producto["categoria"], ENT_QUOTES, "UTF-8") ?>
                             </span>
 
-                            <h3><?= htmlspecialchars($producto["nombre"]) ?></h3>
+                            <h3><?= htmlspecialchars($producto["nombre"], ENT_QUOTES, "UTF-8") ?></h3>
 
                             <?php if (!empty($producto["descripcion"])): ?>
                                 <p class="producto-descripcion">
-                                    <?= htmlspecialchars($producto["descripcion"]) ?>
+                                    <?= htmlspecialchars($producto["descripcion"], ENT_QUOTES, "UTF-8") ?>
                                 </p>
                             <?php endif; ?>
 
                             <label class="etiqueta-presentacion">Presentación</label>
 
-                            <select class="selector-presentacion" onchange="actualizarPresentacion(this)">
+                            <select class="selector-presentacion"
+                                    onchange="actualizarPresentacion(this)">
                                 <?php foreach ($producto["presentaciones"] as $presentacion): ?>
                                     <option value="<?= $presentacion["id"] ?>"
                                             data-precio="<?= $presentacion["precio"] ?>"
-                                            data-nombre="<?= htmlspecialchars($presentacion["nombre"], ENT_QUOTES) ?>"
+                                            data-stock="<?= $presentacion["stock"] ?>"
+                                            data-nombre="<?= htmlspecialchars($presentacion["nombre"], ENT_QUOTES, "UTF-8") ?>"
                                             <?= $presentacion["id"] === $primeraPresentacion["id"] ? "selected" : "" ?>>
-                                        <?= htmlspecialchars($presentacion["nombre"]) ?>
+                                        <?= htmlspecialchars($presentacion["nombre"], ENT_QUOTES, "UTF-8") ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -187,14 +198,32 @@ include("../includes/header.php");
                                 $<?= number_format($primeraPresentacion["precio"], 0, ",", ".") ?>
                             </strong>
 
-                            <label style="display:block;margin-top:10px;">Cantidad</label>
+                            <div class="disponibilidad <?= $unidadesIniciales <= 0 ? "agotado" : ($unidadesIniciales <= 3 ? "stock-bajo" : "stock-normal") ?>"
+                                 role="status">
+                                <span class="icono-disponibilidad">
+                                    <?= $unidadesIniciales <= 0 ? "!" : ($unidadesIniciales <= 3 ? "⚠" : "✓") ?>
+                                </span>
+                                <span class="texto-disponibilidad">
+                                    <?= $unidadesIniciales > 0
+                                        ? "Disponibles: " . $unidadesIniciales
+                                        : "Agotado" ?>
+                                </span>
+                            </div>
 
-                            <input type="number" class="cantidad-producto" value="1"
-                                   min="1" max="999" step="1"
-                                   style="width:90px;padding:8px;margin:5px 0;">
+                            <label class="etiqueta-cantidad">Cantidad</label>
 
-                            <button type="button" class="btn-seleccionar"
-                                    onclick="agregarProducto(this)">
+                            <input type="number"
+                                   class="cantidad-producto"
+                                   value="1"
+                                   min="1"
+                                   max="<?= $unidadesIniciales ?>"
+                                   step="1"
+                                   <?= $unidadesIniciales <= 0 ? "disabled" : "" ?>>
+
+                            <button type="button"
+                                    class="btn-seleccionar"
+                                    onclick="agregarProducto(this)"
+                                    <?= $unidadesIniciales <= 0 ? "disabled" : "" ?>>
                                 Agregar a venta
                             </button>
                         </div>
@@ -216,13 +245,55 @@ const sinResultados = document.getElementById("sinResultados");
 const carrito = {};
 let tiempoBusqueda;
 
+function formatearCantidad(cantidad) {
+    return Number(cantidad).toLocaleString("es-CO", {
+        maximumFractionDigits: 2
+    });
+}
+
 function actualizarPresentacion(selector) {
     const tarjeta = selector.closest(".producto-card");
     const opcion = selector.options[selector.selectedIndex];
     const precio = Number(opcion.dataset.precio || 0);
+    const stock = Math.max(0, Number(opcion.dataset.stock || 0));
+    const unidades = Math.floor(stock);
 
     tarjeta.querySelector(".precio-producto").textContent =
         "$" + precio.toLocaleString("es-CO", {maximumFractionDigits: 0});
+
+    const disponibilidad = tarjeta.querySelector(".disponibilidad");
+    const icono = disponibilidad.querySelector(".icono-disponibilidad");
+    const texto = disponibilidad.querySelector(".texto-disponibilidad");
+
+    disponibilidad.classList.remove("stock-normal", "stock-bajo", "agotado");
+
+    if (unidades <= 0) {
+        disponibilidad.classList.add("agotado");
+        icono.textContent = "!";
+        texto.textContent = "Agotado";
+    } else if (unidades <= 3) {
+        disponibilidad.classList.add("stock-bajo");
+        icono.textContent = "⚠";
+        texto.textContent = "Disponibles: " + unidades;
+    } else {
+        disponibilidad.classList.add("stock-normal");
+        icono.textContent = "✓";
+        texto.textContent = "Disponibles: " + unidades;
+    }
+
+    const campoCantidad = tarjeta.querySelector(".cantidad-producto");
+    const boton = tarjeta.querySelector(".btn-seleccionar");
+
+    campoCantidad.max = unidades;
+    campoCantidad.disabled = unidades <= 0;
+
+    if (unidades <= 0) {
+        campoCantidad.value = 1;
+    } else if (Number(campoCantidad.value) > unidades) {
+        campoCantidad.value = unidades;
+    }
+
+    boton.disabled = unidades <= 0;
 }
 
 function agregarProducto(boton) {
@@ -231,9 +302,18 @@ function agregarProducto(boton) {
     const opcion = selector.options[selector.selectedIndex];
     const id = String(opcion.value);
     const cantidad = Number(tarjeta.querySelector(".cantidad-producto").value);
+    const stock = Math.max(0, Number(opcion.dataset.stock || 0));
+    const unidadesDisponibles = Math.floor(stock);
+    const cantidadActual = carrito[id] ? carrito[id].cantidad : 0;
 
-    if (!Number.isInteger(cantidad) || cantidad < 1 || cantidad > 999) {
+    if (!Number.isInteger(cantidad) || cantidad < 1) {
         alert("Ingresa una cantidad válida.");
+        return;
+    }
+
+    if (cantidadActual + cantidad > unidadesDisponibles) {
+        alert("No hay existencias suficientes. Disponibles: " +
+            Math.max(0, unidadesDisponibles - cantidadActual) + ".");
         return;
     }
 
@@ -245,6 +325,7 @@ function agregarProducto(boton) {
             nombre: tarjeta.querySelector("h3").textContent.trim(),
             presentacion: opcion.dataset.nombre || "Única",
             precio: Number(opcion.dataset.precio || 0),
+            stock: unidadesDisponibles,
             cantidad: cantidad
         };
     }
@@ -256,6 +337,7 @@ function actualizarCarrito() {
     const detalle = document.getElementById("detalleCarrito");
     const cantidadTotal = document.getElementById("cantidadCarrito");
     const contenedor = document.getElementById("productosCarrito");
+
     let unidades = 0;
     let html = "";
 
@@ -338,9 +420,7 @@ function buscarProductos() {
 }
 
 function refrescarProductos() {
-    campoBusqueda.value = "";
-    buscarProductos();
-    campoBusqueda.focus();
+    window.location.reload();
 }
 
 if (campoBusqueda) {

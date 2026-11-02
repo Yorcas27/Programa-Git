@@ -1,4 +1,3 @@
-
 * {
     margin: 0;
     padding: 0;
@@ -174,6 +173,33 @@ body {
 
 .inventario {
     border-left: 5px solid #e74c3c;
+}
+
+/* Resumen de stock bajo */
+.stock-resumen {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 12px;
+    margin-top: 3px;
+}
+
+.stock-resumen-item {
+    min-width: 0;
+}
+
+.card .stock-resumen-item span {
+    color: #777;
+    font-size: 11px;
+    line-height: 1.2;
+    margin-bottom: 5px;
+}
+
+.stock-resumen-item strong {
+    display: block;
+    color: #1f3f6d;
+    font-size: 25px;
+    font-weight: 700;
+    line-height: 1;
 }
 
 /* Paneles */
@@ -460,6 +486,15 @@ tbody tr:last-child td {
 
     .titulo-dashboard h1 {
         font-size: 28px;
+    }
+
+    .stock-resumen {
+        grid-template-columns: 1fr 1.5fr;
+        gap: 8px;
+    }
+
+    .stock-resumen-item strong {
+        font-size: 23px;
     }
 
     .grafica-vertical {

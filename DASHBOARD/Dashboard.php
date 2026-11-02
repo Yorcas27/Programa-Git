@@ -1,4 +1,3 @@
-
 <?php
 
 /* Seguridad */
@@ -42,12 +41,26 @@ $entregasHoy = (int) $resultadoEntregas->fetch_assoc()['total'];
 
 
 /* Insumos con stock bajo */
-$sqlInventario = "SELECT COUNT(*) AS total
-                  FROM insumos
-                  WHERE estado = 'Bajo Stock'";
+$sqlStockBajoInsumos = "SELECT COUNT(*) AS total
+                        FROM insumos
+                        WHERE stock > 0
+                        AND stock <= stock_minimo";
 
-$resultadoInventario = $conexion->query($sqlInventario);
-$stockBajo = (int) $resultadoInventario->fetch_assoc()['total'];
+$resultadoStockBajoInsumos = $conexion->query($sqlStockBajoInsumos);
+$stockBajoInsumos = (int) $resultadoStockBajoInsumos->fetch_assoc()['total'];
+
+
+/* Productos terminados con stock bajo */
+$sqlStockBajoProductos = "SELECT COUNT(DISTINCT p.id_producto) AS total
+                          FROM productos p
+                          LEFT JOIN inventario_productos_terminados i
+                              ON p.id_producto = i.id_producto
+                          WHERE LOWER(p.estado) = 'activo'
+                          AND COALESCE(i.stock, 0) > 0
+                          AND COALESCE(i.stock, 0) <= COALESCE(i.stock_minimo, 0)";
+
+$resultadoStockBajoProductos = $conexion->query($sqlStockBajoProductos);
+$stockBajoProductos = (int) $resultadoStockBajoProductos->fetch_assoc()['total'];
 
 
 /* Actividad del mes: pedidos */
@@ -177,7 +190,20 @@ $resultadoProduccionHoy = $conexion->query($sqlProduccionHoy);
             <div class="card inventario">
                 <p class="titulo-card">Inventario</p>
                 <span>Stock bajo</span>
-                <h2><?= str_pad($stockBajo, 2, '0', STR_PAD_LEFT) ?></h2>
+
+                <div class="stock-resumen">
+
+                    <div class="stock-resumen-item">
+                        <span>Insumos</span>
+                        <strong><?= str_pad($stockBajoInsumos, 2, '0', STR_PAD_LEFT) ?></strong>
+                    </div>
+
+                    <div class="stock-resumen-item">
+                        <span>Productos terminados</span>
+                        <strong><?= str_pad($stockBajoProductos, 2, '0', STR_PAD_LEFT) ?></strong>
+                    </div>
+
+                </div>
             </div>
 
         </section>

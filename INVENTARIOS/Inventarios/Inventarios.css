@@ -1,292 +1,239 @@
+
 /* VARIABLES */
 
-:root{
+:root {
     --principal:#1f3f6d;
     --secundario:#4a8be0;
-
+    --fondo:#f4f6f9;
+    --texto:#666;
+    --blanco:#fff;
     --verde:#27ae60;
+    --rojo:#e74c3c;
+    --naranja:#f39c12;
     --azul:#3498db;
     --morado:#8e44ad;
-    --turquesa:#16a085;
     --gris:#2c3e50;
-    --naranja:#f39c12;
-    --rojo:#e74c3c;
-
-    --texto:#666;
-    --fondo:#f4f6f9;
-    --blanco:#fff;
 }
 
+/* RESET */
 
-/* CONFIGURACION GENERAL */
-
-*{
+* {
     margin:0;
     padding:0;
     box-sizing:border-box;
     font-family:'Segoe UI',sans-serif;
 }
 
+/* GENERAL */
 
-body{
+body {
     background:var(--fondo);
-    color:#333;
+    color:var(--texto);
     overflow-x:hidden;
 }
 
-
 /* CONTENIDO */
 
-.contenido{
+.contenido {
     width:100%;
     min-height:100vh;
     padding:15px 55px;
     background:transparent;
 }
 
-
 /* CONTENEDORES */
 
 .barra-superior,
-.encabezado{
+.encabezado {
     width:100%;
     max-width:1100px;
     margin-left:auto;
     margin-right:auto;
 }
 
-
 /* BARRA SUPERIOR */
 
-.barra-superior{
+.barra-superior {
     margin-bottom:15px;
 }
 
+/* BOTÓN REGRESAR */
 
-/* BOTON REGRESAR */
-
-.btn-regresar{
+.btn-regresar {
     display:inline-block;
-
     padding:10px 20px;
-
     background:var(--principal);
     color:var(--blanco);
-
     text-decoration:none;
     border-radius:8px;
-
     font-size:15px;
     font-weight:600;
-
     transition:.3s;
 }
 
-
-.btn-regresar:hover{
+.btn-regresar:hover {
     background:var(--secundario);
 }
 
-
 /* ENCABEZADO */
 
-.encabezado{
+.encabezado {
     background:var(--blanco);
-
     padding:25px;
     margin-bottom:25px;
-
     border-radius:12px;
-
     box-shadow:0 4px 12px rgba(0,0,0,.08);
 }
 
-
-.encabezado h1{
+.encabezado h1 {
     margin-bottom:8px;
-
     color:var(--principal);
     font-size:30px;
 }
 
-
-.encabezado p{
+.encabezado p {
     color:var(--texto);
-
     font-size:15px;
     line-height:1.5;
 }
 
+/* MENÚ DE INVENTARIOS */
 
-/* MENU DE INVENTARIOS */
-
-.menu-inventarios{
+.menu-inventarios {
     width:100%;
     max-width:1100px;
-
     margin:0 auto;
-
     display:grid;
     grid-template-columns:repeat(3,1fr);
-
     gap:18px;
 }
 
-
 /* TARJETAS */
 
-.tarjeta-menu{
+.tarjeta-menu {
     position:relative;
-
     display:block;
-
     min-height:145px;
     padding:20px;
-
     background:var(--blanco);
-
     border-radius:10px;
-
     text-decoration:none;
     color:inherit;
-
     box-shadow:0 4px 12px rgba(0,0,0,.08);
-
     overflow:hidden;
-
     transition:.3s;
 }
 
-
-.tarjeta-menu:hover{
+.tarjeta-menu:hover {
     transform:translateY(-3px);
-
     box-shadow:0 7px 16px rgba(0,0,0,.12);
 }
 
+/* LÍNEA SUPERIOR */
 
-/* LINEA SUPERIOR */
-
-.tarjeta-menu::before{
+.tarjeta-menu::before {
     content:"";
-
     position:absolute;
-
     top:0;
     left:0;
-
     width:100%;
     height:5px;
 }
 
+/* COLORES */
 
-/* COLORES DE LAS TARJETAS */
-
-.inventario-general::before{
+.inventario-general::before {
     background:var(--azul);
 }
 
-
-.insumos::before{
-    background:var(--secundario);
-}
-
-
-.movimientos::before{
-    background:var(--morado);
-}
-
-
-.categorias::before{
+.productos-terminados::before {
     background:var(--verde);
 }
 
+.insumos::before {
+    background:var(--secundario);
+}
 
-.proveedores::before{
+.movimientos::before {
+    background:var(--morado);
+}
+
+.categorias::before {
+    background:var(--verde);
+}
+
+.proveedores::before {
     background:var(--gris);
 }
 
+.compras::before {
+    background:var(--azul);
+}
 
-.alertas::before{
+.alertas::before {
     background:var(--naranja);
 }
 
+/* NÚMERO DEL MÓDULO */
 
-/* NUMERO DEL MODULO */
-
-.numero-modulo{
+.numero-modulo {
     display:flex;
     align-items:center;
     justify-content:center;
-
     width:36px;
     height:36px;
-
     margin-bottom:12px;
-
     background:#eef2f7;
     color:var(--principal);
-
     border-radius:8px;
-
     font-size:14px;
     font-weight:700;
 }
 
+/* TÍTULO */
 
-/* TITULO */
-
-.tarjeta-menu h3{
+.tarjeta-menu h3 {
     margin-bottom:7px;
-
     color:var(--principal);
     font-size:18px;
 }
 
+/* DESCRIPCIÓN */
 
-/* DESCRIPCION */
-
-.tarjeta-menu p{
+.tarjeta-menu p {
     color:var(--texto);
-
     font-size:13px;
     line-height:1.5;
 }
 
-
 /* TABLET */
 
-@media(max-width:900px){
-
-    .menu-inventarios{
+@media(max-width:900px) {
+    .menu-inventarios {
         grid-template-columns:repeat(2,1fr);
     }
-
 }
 
+/* MÓVIL */
 
-/* MOVIL */
-
-@media(max-width:600px){
-
-    .contenido{
+@media(max-width:600px) {
+    .contenido {
         padding:20px;
     }
 
-    .encabezado{
+    .encabezado {
         padding:20px;
     }
 
-    .encabezado h1{
+    .encabezado h1 {
         font-size:26px;
     }
 
-    .menu-inventarios{
+    .menu-inventarios {
         grid-template-columns:1fr;
     }
 
-    .tarjeta-menu{
+    .tarjeta-menu {
         min-height:auto;
     }
-
 }

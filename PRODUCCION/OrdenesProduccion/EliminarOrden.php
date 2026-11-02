@@ -1,3 +1,4 @@
+
 <?php
 require_once("../../includes/conexion.php");
 
@@ -28,7 +29,12 @@ try {
     $conexion->begin_transaction();
 
     $consulta = $conexion->prepare("
-        SELECT codigo, estado, fecha_entrega_real
+        SELECT
+            codigo,
+            estado,
+            destino,
+            fecha_entrega_real,
+            fecha_entrega_real <= DATE_SUB(CURDATE(), INTERVAL 30 DAY) AS elegible
         FROM ordenes_produccion
         WHERE id_orden = ?
         FOR UPDATE
@@ -47,56 +53,56 @@ try {
     $consulta->close();
 
     if (!$orden) {
-        $conexion->rollback();
-        responder(false, "La orden no existe o ya fue eliminada.", 404);
+        throw new Exception("La orden no existe o ya fue eliminada.");
+    }
+
+    if ($orden["destino"] !== "POR_PEDIDO") {
+        throw new Exception("Solo se pueden depurar órdenes generadas desde Pedidos.");
     }
 
     if (
         $orden["estado"] !== "Entregada" ||
         empty($orden["fecha_entrega_real"])
     ) {
-        $conexion->rollback();
-
-        responder(
-            false,
-            "Solo se pueden eliminar órdenes entregadas con fecha real registrada.",
-            409
-        );
+        throw new Exception("Solo se pueden eliminar órdenes entregadas con fecha real registrada.");
     }
 
-    $validarFecha = $conexion->prepare("
-        SELECT
-            fecha_entrega_real <= DATE_SUB(CURDATE(), INTERVAL 30 DAY) AS elegible
-        FROM ordenes_produccion
+    if (!(int)$orden["elegible"]) {
+        throw new Exception("La orden todavía no cumple los 30 días desde su entrega real.");
+    }
+
+    // Verificar registros asociados en productos terminados.
+    $validarProductos = $conexion->prepare("
+        SELECT COUNT(*) AS total
+        FROM productos_terminados
         WHERE id_orden = ?
     ");
 
-    if (!$validarFecha) {
-        throw new Exception("No fue posible validar la antigüedad.");
+    if (!$validarProductos) {
+        throw new Exception("No fue posible verificar los productos terminados relacionados.");
     }
 
-    $validarFecha->bind_param("i", $idOrden);
-    $validarFecha->execute();
+    $validarProductos->bind_param("i", $idOrden);
+    $validarProductos->execute();
 
-    $fechaResultado = $validarFecha->get_result();
-    $fechaRegistro = $fechaResultado->fetch_assoc();
+    $resultadoProductos = $validarProductos->get_result();
+    $productosRelacionados = $resultadoProductos->fetch_assoc();
 
-    $validarFecha->close();
+    $validarProductos->close();
 
-    if (!$fechaRegistro || !(int)$fechaRegistro["elegible"]) {
-        $conexion->rollback();
-
-        responder(
-            false,
-            "La orden todavía no cumple los 30 días desde su entrega real.",
-            409
+    if ((int)$productosRelacionados["total"] > 0) {
+        throw new Exception(
+            "No se puede eliminar la orden porque tiene productos terminados relacionados. Se debe conservar su historial de inventario."
         );
     }
 
+    // Eliminar únicamente la orden que cumple todas las condiciones.
     $eliminar = $conexion->prepare("
         DELETE FROM ordenes_produccion
         WHERE id_orden = ?
+          AND destino = 'POR_PEDIDO'
           AND estado = 'Entregada'
+          AND fecha_entrega_real IS NOT NULL
           AND fecha_entrega_real <= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
     ");
 
@@ -112,16 +118,11 @@ try {
 
     if ($eliminar->affected_rows !== 1) {
         $eliminar->close();
-        $conexion->rollback();
-
-        responder(
-            false,
-            "La orden cambió o dejó de cumplir las condiciones para eliminarse.",
-            409
-        );
+        throw new Exception("La orden cambió o dejó de cumplir las condiciones para eliminarse.");
     }
 
     $eliminar->close();
+
     $conexion->commit();
 
     responder(
@@ -130,6 +131,7 @@ try {
     );
 
 } catch (Throwable $e) {
+
     try {
         $conexion->rollback();
     } catch (Throwable $ignorado) {
@@ -139,7 +141,7 @@ try {
 
     responder(
         false,
-        "No se pudo eliminar la orden. Puede existir información relacionada que deba conservarse.",
-        500
+        $e->getMessage(),
+        409
     );
 }
