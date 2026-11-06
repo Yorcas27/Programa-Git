@@ -188,7 +188,7 @@ body {
 
 /* BUSCADOR */
 .buscar {
-    width:240px;
+    width:500px;
     padding:10px 12px;
     border:1px solid #ccc;
     border-radius:7px;
@@ -223,11 +223,11 @@ body {
 }
 
 .btn-actualizar {
-    background:var(--secundario);
+    background:var(--principal);
 }
 
 .btn-actualizar:hover {
-    background:var(--principal);
+    background:var(--secundario)
 }
 
 /* TABLA */

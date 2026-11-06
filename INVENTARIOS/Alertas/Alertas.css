@@ -1,6 +1,4 @@
-/* ========================================
-   ALERTAS DE STOCK - YCL SOLUTIONS
-======================================== */
+
 
 * {
     box-sizing: border-box;
@@ -158,7 +156,7 @@
 }
 
 .buscar {
-    min-width: 210px;
+    min-width: 350px;
     padding: 10px 12px;
     border: 1px solid #ccd3dc;
     border-radius: 6px;

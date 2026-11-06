@@ -1,3 +1,4 @@
+
 :root{
     --principal:#1f3f6d;
     --secundario:#4a8be0;
@@ -148,7 +149,7 @@ body{
 
 .panel{
     margin-bottom:20px;
-    padding:20px;
+    padding:20px; 
     background:var(--blanco);
     border-radius:10px;
     box-shadow:0 4px 12px rgba(0,0,0,.08);
@@ -159,7 +160,7 @@ body{
     justify-content:space-between;
     align-items:center;
     gap:15px;
-    margin-bottom:18px;
+    margin-bottom:1px;
 }
 
 .panel-header h2{
@@ -237,9 +238,11 @@ body{
 .buscador{
     display:flex;
     align-items:center;
+    justify-content:flex-end;
     gap:10px;
     width:100%;
     margin-bottom:15px;
+    padding-right:5px;
 }
 
 .buscador input{
@@ -255,12 +258,13 @@ body{
 }
 
 .campo-busqueda{
-    width:600px;
+    width:300px;
     max-width:100%;
+    margin-left:auto;
 }
 
 .btn-buscar{
-    margin-left:auto;
+    margin-left:0;
 }
 
 /* ACCIONES DE TABLA */
@@ -589,6 +593,15 @@ tbody tr:hover{
         align-items:stretch;
     }
 
+    .buscador{
+        padding-right:0;
+    }
+
+    .campo-busqueda{
+        width:100%;
+        margin-left:0;
+    }
+
     .grupo-formulario{
         grid-template-columns:1fr;
     }
@@ -634,12 +647,7 @@ tbody tr:hover{
         width:100%;
         text-align:center;
     }
-
-    .campo-busqueda{
-        width:100%;
-    }
 }
-
 
 @media(max-width:576px){
 
